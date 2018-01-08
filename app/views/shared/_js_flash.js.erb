@@ -1,0 +1,13 @@
+var existingFlash;
+var newFlash;
+
+// Remove existing flash, if any.
+existingFlash = document.querySelector('.flash');
+if (existingFlash) existingFlash.remove();
+
+// Create and append new flash.
+newFlash = document.createElement('div');
+newFlash.classList.add('flash');
+newFlash.classList.add('flash-<%= type %>');
+newFlash.innerHTML = "<%= message %>";
+document.querySelector('header').appendChild(newFlash);

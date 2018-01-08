@@ -1,9 +1,4 @@
-var existingFlash;
-var newFlash;
-
-// Remove existing flash, if any.
-existingFlash = document.querySelector('.flash');
-if (existingFlash) existingFlash.remove();
+<%= render 'shared/js_flash', message: @flash[:message], type: @flash[:type] %>
 
 // Change status to invited and delete 'Remove' link.
 document.querySelector('a[href="/guests/<%= @guest.id %>/invitations"]')
@@ -12,10 +7,3 @@ document.querySelector('a[href="/guests/<%= @guest.id %>/invitations"]')
 document.querySelector('a[href="/guests/<%= @guest.id %>"]')
   .parentNode
   .innerHTML = '';
-
-// Create and append new flash.
-newFlash = document.createElement('div');
-newFlash.classList.add('flash');
-newFlash.classList.add('flash-success');
-newFlash.innerHTML = "<%= @flash %>";
-document.querySelector('header').appendChild(newFlash);

@@ -13,7 +13,7 @@ module ApplicationHelper
       ''
     else
       link_to 'Remove', guest_path(guest), method: :delete, data:
-        { confirm: 'Are you sure?' }
+        { confirm: 'Are you sure?' }, remote: true
     end
   end
 end

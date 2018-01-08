@@ -17,7 +17,7 @@ class InvitationsController < ApplicationController
         end
 
         format.js do
-          @flash = flash_message
+          @flash = js_flash(flash_message, :success)
           render :create
         end
       end

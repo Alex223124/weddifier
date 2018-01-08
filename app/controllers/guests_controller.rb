@@ -20,17 +20,28 @@ class GuestsController < ApplicationController
 
   def destroy
     begin
-      guest = Guest.find(params[:id])
+      @guest = Guest.find(params[:id])
     rescue ActiveRecord::RecordNotFound
       flash[:error] = 'Guest does not exist.'
       return redirect_to admin_path
     end
 
-    guest.destroy
-    flash[:success] = "Successfully removed guest #{guest.first_name}"\
-      " #{guest.last_name} #{guest.father_surname} #{guest.mother_surname} -"\
-      " #{guest.email}."
-    redirect_to admin_path
+    flash_message = "Successfully removed guest #{@guest.first_name}"\
+          " #{@guest.last_name} #{@guest.father_surname}"\
+          " #{@guest.mother_surname} - #{@guest.email}."
+    @guest.destroy
+
+    respond_to do |format|
+      format.html do
+        flash[:success] = flash_message
+        redirect_to admin_path
+      end
+
+      format.js do
+        @flash = js_flash(flash_message, :success)
+        render :destroy
+      end
+    end
   end
 
   private
