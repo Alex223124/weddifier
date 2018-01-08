@@ -7,6 +7,7 @@ end
 
 gem 'haml'
 gem 'pg'
+gem 'bcrypt'
 
 gem 'rails', '~> 5.1.4'
 gem 'sqlite3'
