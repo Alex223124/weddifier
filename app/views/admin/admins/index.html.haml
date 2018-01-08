@@ -14,6 +14,8 @@
     %th Mother surname
     %th Email
     %th Phone
+    %th Status
+    %th Remove
   - @guests.each do |guest|
     %tr
       %td= check_box_tag 'guest_id[]', guest.id
@@ -23,3 +25,5 @@
       %td= guest.mother_surname
       %td= guest.email
       %td= guest.phone
+      %td= guest_invite_status(guest)
+      %td= link_to 'Remove', guest_path(guest), method: :delete, data: { confirm: 'Are you sure?' }
