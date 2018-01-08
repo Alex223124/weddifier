@@ -12,4 +12,8 @@ class Guest < ActiveRecord::Base
   validates_numericality_of :phone
   validates_length_of :phone, { minimum: 10, maximum: 10 }
   validates_uniqueness_of :email
+
+  def invited?
+    self.invitation.present?
+  end
 end
