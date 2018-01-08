@@ -6,4 +6,13 @@ module ApplicationHelper
       link_to 'Invite', guest_invitations_path(guest), method: :post
     end
   end
+
+  def guest_remove_link(guest)
+    if guest.invited?
+      ''
+    else
+      link_to 'Remove', guest_path(guest), method: :delete, data:
+        { confirm: 'Are you sure?' }
+    end
+  end
 end

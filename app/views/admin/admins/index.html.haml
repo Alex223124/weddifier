@@ -26,4 +26,4 @@
       %td= guest.email
       %td= guest.phone
       %td= guest_invite_status(guest)
-      %td= link_to 'Remove', guest_path(guest), method: :delete, data: { confirm: 'Are you sure?' }
+      %td= guest_remove_link(guest)
