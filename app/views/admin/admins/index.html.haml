@@ -1,0 +1,25 @@
+%h1 Registrations
+
+= label_tag :query
+= text_field_tag :query, 'Search'
+
+= link_to 'Logout', admin_logout_path
+
+%table
+  %tr
+    %th= check_box_tag :select_all
+    %th First name
+    %th Last name
+    %th Father surname
+    %th Mother surname
+    %th Email
+    %th Phone
+  - @guests.each do |guest|
+    %tr
+      %td= check_box_tag 'guest_id[]', guest.id
+      %td= guest.first_name
+      %td= guest.last_name
+      %td= guest.father_surname
+      %td= guest.mother_surname
+      %td= guest.email
+      %td= guest.phone
