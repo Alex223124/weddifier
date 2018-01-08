@@ -1,0 +1,28 @@
+%h1 Registro
+
+- if @guest.errors.any?
+  %ul
+  - @guest.errors.full_messages.each do |message|
+    %li= message
+
+
+= form_for @guest do |f|
+  = f.label :first_name
+  = f.text_field :first_name, required: true
+
+  = f.label :last_name
+  = f.text_field :last_name
+
+  = f.label :father_surname
+  = f.text_field :father_surname, required: true
+
+  = f.label :mother_surname
+  = f.text_field :mother_surname, required: true
+
+  = f.label :phone
+  = f.phone_field :phone, required: true
+
+  = f.label :email
+  = f.email_field :email, required: true
+
+  = f.submit 'Register'

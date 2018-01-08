@@ -1,3 +1,7 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  root to: 'guests#new'
+  get '/thanks', to: 'pages#thanks', as: 'thank_you'
+  get '/home', to: 'pages#home'
+
+  resources :guests, only: [:new, :create]
 end
