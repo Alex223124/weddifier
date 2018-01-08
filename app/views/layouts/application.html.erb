@@ -9,6 +9,15 @@
   </head>
 
   <body>
-    <%= yield %>
+    <header>
+      <% if flash.any? %>
+        <% flash.each do |type, message| %>
+          <div class="flash-<%= type %>"><%= message %></div>
+        <% end %>
+      <% end %>
+    </header>
+    <main>
+      <%= yield %>
+    </main>
   </body>
 </html>
