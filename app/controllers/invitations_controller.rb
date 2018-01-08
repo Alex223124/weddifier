@@ -23,7 +23,7 @@ class InvitationsController < ApplicationController
       end
 
       invitation = Invitation.create(guest: @guest)
-      ApplicationMailer.send_invite(@guest.id).deliver
+      SendInviteJob.perform_async(@guest.id)
     end
   end
 end

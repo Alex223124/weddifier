@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sucker_punch/testing/inline'
 
 describe 'Invitations Controller request', type: :request do
   context 'POST create' do
