@@ -28,11 +28,9 @@ ActiveRecord::Schema.define(version: 20180108044521) do
     t.string "mother_surname"
     t.string "phone"
     t.string "email"
-    t.bigint "admin_id"
     t.bigint "leader_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["admin_id"], name: "index_guests_on_admin_id"
     t.index ["email"], name: "index_guests_on_email"
     t.index ["first_name"], name: "index_guests_on_first_name"
     t.index ["leader_id"], name: "index_guests_on_leader_id"
@@ -47,7 +45,6 @@ ActiveRecord::Schema.define(version: 20180108044521) do
     t.index ["token"], name: "index_invitations_on_token"
   end
 
-  add_foreign_key "guests", "admins"
   add_foreign_key "guests", "guests", column: "leader_id"
   add_foreign_key "invitations", "guests"
 end
