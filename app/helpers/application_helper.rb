@@ -3,7 +3,8 @@ module ApplicationHelper
     if guest.invited?
       'Invited'
     else
-      link_to 'Invite', guest_invitations_path(guest), method: :post
+      link_to 'Invite', guest_invitations_path(guest), method: :post,
+        remote: true
     end
   end
 

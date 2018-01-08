@@ -1,20 +1,29 @@
 class InvitationsController < ApplicationController
   def create
-    guest = Guest.find(params[:guest_id])
+    @guest = Guest.find(params[:guest_id])
 
-    if guest.invited?
+    if @guest.invited?
       flash[:error] = 'Guest was already invited.'
       return redirect_to admin_path
     else
-      invitation = Invitation.create
-      guest.invitation = invitation
+      flash_message = "Successfully invited guest #{@guest.first_name}"\
+          " #{@guest.last_name} #{@guest.father_surname}"\
+          " #{@guest.mother_surname} - #{@guest.email}."
+      respond_to do |format|
 
-      ApplicationMailer.send_invite(guest.id).deliver
+        format.html do
+          flash[:success] = flash_message
+          redirect_to admin_path
+        end
 
-      flash[:success] = "Successfully invited guest #{guest.first_name}"\
-        " #{guest.last_name} #{guest.father_surname} #{guest.mother_surname} -"\
-        " #{guest.email}."
-      redirect_to admin_path
+        format.js do
+          @flash = flash_message
+          render :create
+        end
+      end
+
+      invitation = Invitation.create(guest: @guest)
+      ApplicationMailer.send_invite(@guest.id).deliver
     end
   end
 end
