@@ -27,7 +27,9 @@ class GuestsController < ApplicationController
     end
 
     guest.destroy
-    flash[:success] = "Successfully deleted #{guest.first_name}."
+    flash[:success] = "Successfully removed guest #{guest.first_name}"\
+      " #{guest.last_name} #{guest.father_surname} #{guest.mother_surname} -"\
+      " #{guest.email}."
     redirect_to admin_path
   end
 
