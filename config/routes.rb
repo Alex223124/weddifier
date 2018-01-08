@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   get '/thanks', to: 'pages#thanks', as: 'thank_you'
   get '/home', to: 'pages#home'
 
-  resources :guests, only: [:new, :create]
+  resources :guests, only: [:new, :create, :destroy] do
+    resources :invitations, only: [:create]
+  end
 
   namespace :admin do
     get '', to: 'admins#index'

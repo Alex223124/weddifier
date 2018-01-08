@@ -73,4 +73,36 @@ describe 'Guests Controller request', type: :request do
       end
     end
   end
+
+  context 'DELETE destroy' do
+    context 'with valid guest' do
+      let!(:guest) { Fabricate(:guest) }
+
+      it 'destroys the guest' do
+        expect { delete guest_path(guest) }.to change(Guest, :count).by(-1)
+      end
+
+      it 'redirects to admin path' do
+        delete guest_path(guest)
+        expect(response).to redirect_to admin_path
+      end
+
+      it 'displays a flash success message' do
+        delete guest_path(guest)
+        expect(flash[:success]).to be_present
+      end
+    end
+
+    context 'with invalid guest' do
+      before { delete guest_path(1) }
+
+      it 'flashes an error message' do
+        expect(flash[:error]).to be_present
+      end
+
+      it 'redirects to admin path' do
+        expect(response).to redirect_to admin_path
+      end
+    end
+  end
 end

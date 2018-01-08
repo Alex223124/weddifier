@@ -18,6 +18,19 @@ class GuestsController < ApplicationController
     end
   end
 
+  def destroy
+    begin
+      guest = Guest.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:error] = 'Guest does not exist.'
+      return redirect_to admin_path
+    end
+
+    guest.destroy
+    flash[:success] = "Successfully deleted #{guest.first_name}."
+    redirect_to admin_path
+  end
+
   private
 
   def guest_params
