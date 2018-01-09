@@ -23,7 +23,6 @@ class InvitationsController < ApplicationController
       end
 
       invitation = Invitation.create(guest: @guest)
-      SendInviteJob.perform_async(@guest.id)
     end
   end
 end

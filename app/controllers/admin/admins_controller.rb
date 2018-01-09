@@ -21,7 +21,6 @@ class Admin::AdminsController < ApplicationController
         next if guest.invited?
 
         Invitation.create!(guest: guest)
-        SendInviteJob.perform_async(guest.id)
       end
     end
 

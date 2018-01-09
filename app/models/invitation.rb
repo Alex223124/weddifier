@@ -2,7 +2,7 @@ class Invitation < ActiveRecord::Base
   belongs_to :guest
 
   before_create :generate_token
-  after_create :set_guest_invited_boolean
+  after_create :set_guest_invited_boolean, :send_invite
 
   private
 
@@ -13,5 +13,9 @@ class Invitation < ActiveRecord::Base
   def set_guest_invited_boolean
     self.guest.invited = true
     self.guest.save
+  end
+
+  def send_invite
+    SendInviteJob.perform_async(self.guest.id)
   end
 end
