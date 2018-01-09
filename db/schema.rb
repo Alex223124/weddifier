@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20180108044521) do
     t.string "mother_surname"
     t.string "phone"
     t.string "email"
+    t.boolean "invited", default: false
     t.bigint "leader_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

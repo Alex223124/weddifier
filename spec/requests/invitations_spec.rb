@@ -13,6 +13,10 @@ describe 'Invitations Controller request', type: :request do
         expect(guest.reload.invitation).not_to be_nil
       end
 
+      it 'sets the guest invited boolean to true' do
+        expect(guest.reload.invited).to be(true)
+      end
+
       it 'displays a flash success message' do
         expect(flash[:success]).to be_present
       end

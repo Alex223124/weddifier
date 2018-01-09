@@ -7,6 +7,7 @@ class CreateGuests < ActiveRecord::Migration[5.1]
       t.string :mother_surname
       t.string :phone
       t.string :email, index: true, unique: true
+      t.boolean :invited, default: false
       t.references :leader, index: true
       t.timestamps
     end
