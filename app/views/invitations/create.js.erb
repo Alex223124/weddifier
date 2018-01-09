@@ -1,6 +1,11 @@
 <%= render 'shared/js_flash', message: @flash[:message], type: @flash[:type] %>
 
 // Change status to invited and delete 'Remove' link.
+var row;
+row = document.querySelector('a[href="/guests/<%= @guest.id %>/invitations"]')
+  .closest('tr');
+row.remove()
+document.querySelector('tbody').appendChild(row)
 document.querySelector('a[href="/guests/<%= @guest.id %>/invitations"]')
   .parentNode
   .innerHTML = 'Invited';
