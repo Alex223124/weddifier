@@ -8,25 +8,28 @@
 = link_to 'Logout', admin_logout_path
 = link_to 'Clear filters', admin_path
 
-%table
-  %tr
-    %th= check_box_tag :select_all
-    %th= admin_filter('first_name')
-    %th= admin_filter('last_name')
-    %th= admin_filter('father_surname')
-    %th= admin_filter('mother_surname')
-    %th= admin_filter('email')
-    %th= admin_filter('phone')
-    %th= admin_filter('invited')
-    %th Remove
-  - @guests.each do |guest|
+= form_tag admin_update_guests_path do
+  = submit_tag 'Invite Selected'
+
+  %table
     %tr
-      %td= check_box_tag 'guest_id[]', guest.id
-      %td= guest.first_name
-      %td= guest.last_name
-      %td= guest.father_surname
-      %td= guest.mother_surname
-      %td= guest.email
-      %td= guest.phone
-      %td= guest_invite_status(guest)
-      %td= guest_remove_link(guest)
+      %th= check_box_tag :select_all
+      %th= admin_filter('first_name')
+      %th= admin_filter('last_name')
+      %th= admin_filter('father_surname')
+      %th= admin_filter('mother_surname')
+      %th= admin_filter('email')
+      %th= admin_filter('phone')
+      %th= admin_filter('invited')
+      %th Remove
+    - @guests.each do |guest|
+      %tr
+        %td= check_box_tag 'guest_ids[]', guest.id
+        %td= guest.first_name
+        %td= guest.last_name
+        %td= guest.father_surname
+        %td= guest.mother_surname
+        %td= guest.email
+        %td= guest.phone
+        %td= guest_invite_status(guest)
+        %td= guest_remove_link(guest)

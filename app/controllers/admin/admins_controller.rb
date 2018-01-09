@@ -13,6 +13,22 @@ class Admin::AdminsController < ApplicationController
     end
   end
 
+  def update
+    ActiveRecord::Base.transaction do
+      params[:guest_ids].each do |guest_id|
+        guest = Guest.find guest_id
+
+        next if guest.invited?
+
+        Invitation.create!(guest: guest)
+        SendInviteJob.perform_async(guest.id)
+      end
+    end
+
+    flash[:success] = 'Guests invited successfully.'
+    redirect_to admin_path
+  end
+
   private
 
   def require_admin
