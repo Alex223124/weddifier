@@ -5,7 +5,7 @@ module Admin
     def index
       if params[:query] && params[:order]
         if params[:query] == 'invited'
-          @guests = Guest.unscoped.order("#{params[:query]} #{params[:order]}")
+          @guests = Guest.unscoped.includes(:invitation).order("#{params[:query]} #{params[:order]}")
         else
           @guests = Guest.order("#{params[:query]} #{params[:order]}")
         end
