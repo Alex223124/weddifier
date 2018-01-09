@@ -9,6 +9,8 @@ gem 'haml'
 gem 'pg'
 gem 'bcrypt'
 gem 'sucker_punch'
+gem 'bootstrap', '~> 4.0.0.beta3'
+gem 'jquery-rails'
 
 gem 'rails', '~> 5.1.4'
 gem 'sqlite3'
