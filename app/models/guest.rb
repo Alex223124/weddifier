@@ -1,7 +1,6 @@
 class Guest < ActiveRecord::Base
   default_scope { includes(:invitation)
-    .order(invited: :asc)
-    .order('invitations.updated_at ASC') }
+    .order(invited: :asc) }
 
   has_one :plus_one, class_name: 'Guest', foreign_key: 'leader_id'
   belongs_to :leader, class_name: 'Guest', optional: true
