@@ -1,7 +1,8 @@
 %h1 Registrations
 
 = label_tag :query
-= text_field_tag :query, 'Search'
+= text_field_tag :query, params[:search], placeholder: 'Search',
+  autofocus: true
 
 / TODO: Feature spec
 
