@@ -29,6 +29,11 @@ module Admin
       redirect_to admin_path
     end
 
+    def search
+      @guests = Guest.full_search(params[:search])
+      render :index
+    end
+
     private
 
     def require_admin

@@ -19,4 +19,13 @@ class Guest < ActiveRecord::Base
   def invited?
     self.invitation.present?
   end
+
+  def self.full_search(query)
+    self.where(
+      "first_name ILIKE ? OR last_name ILIKE ? OR father_surname ILIKE ? "\
+      "OR mother_surname ILIKE ? OR email ILIKE ? OR phone ILIKE ?",
+      "%#{query}%", "%#{query}%", "%#{query}%",
+      "%#{query}%", "%#{query}%", "%#{query}%"
+    )
+  end
 end

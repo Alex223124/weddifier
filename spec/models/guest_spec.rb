@@ -29,24 +29,38 @@ describe Guest, type: :model do
       expect(guest.invited?).to be(false)
     end
   end
-end
 
-class Guest < ActiveRecord::Base
-  has_one :plus_one, class_name: 'Guest', foreign_key: 'leader_id'
-  belongs_to :leader, class_name: 'Guest', optional: true
-  # Optional is true because a Guest does not always needs a leader, it can
-  # either be a leader himself, or be a plus one and indeed need a leader.
+  context '#full_search' do
+    let!(:guest) { Fabricate(:guest) }
 
-  has_one :invitation
+    it 'searches by first name' do
+      expect(Guest.full_search(guest.first_name[0, 2].downcase))
+        .to include(guest)
+    end
 
-  validates_presence_of :first_name, :father_surname, :mother_surname, :email,
-    :phone
-  validates_presence_of :last_name, allow_blank: true
-  validates_numericality_of :phone
-  validates_length_of :phone, { minimum: 10, maximum: 10 }
-  validates_uniqueness_of :email
+    it 'searches by last name' do
+      expect(Guest.full_search(guest.last_name[0, 2].downcase))
+        .to include(guest)
+    end
 
-  def invited?
-    self.invitation.present?
+    it 'searches by father surname' do
+      expect(Guest.full_search(guest.father_surname[0, 2].downcase))
+        .to include(guest)
+    end
+
+    it 'searches by mother surname' do
+      expect(Guest.full_search(guest.mother_surname[0, 2].downcase))
+        .to include(guest)
+    end
+
+    it 'searches by email' do
+      expect(Guest.full_search(guest.email[0, 2].downcase))
+        .to include(guest)
+    end
+
+    it 'searches by phone' do
+      expect(Guest.full_search(guest.phone[0, 2].downcase))
+        .to include(guest)
+    end
   end
 end

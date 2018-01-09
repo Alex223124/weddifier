@@ -16,6 +16,13 @@ describe 'Admin::Admins controller request', type: :request do
         expect(response).to redirect_to admin_login_path
       end
     end
+
+    context 'GET search' do
+      it 'redirects to admin login path' do
+        get admin_search_path
+        expect(response).to redirect_to admin_login_path
+      end
+    end
   end
 
   context 'when admin is logged in' do
@@ -73,6 +80,21 @@ describe 'Admin::Admins controller request', type: :request do
           .to include(guest1.email)
         expect(ActionMailer::Base.deliveries.map(&:to).flatten.last)
           .to include(guest2.email)
+      end
+    end
+
+    context 'GET search' do
+      let!(:gracie) { Fabricate(:guest, first_name: 'Gracie') }
+      let!(:john) { Fabricate(:guest, first_name: 'John') }
+
+      it 'displays search results' do
+        get admin_path
+        expect(response.body).to include(gracie.first_name)
+        expect(response.body).to include(john.first_name)
+
+        get admin_search_path(search: 'gracie')
+        expect(response.body).to include(gracie.first_name)
+        expect(response.body).not_to include(john.first_name)
       end
     end
   end

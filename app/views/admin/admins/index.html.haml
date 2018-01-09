@@ -1,10 +1,10 @@
 %h1 Registrations
 
-= label_tag :query
-= text_field_tag :query, params[:search], placeholder: 'Search',
-  autofocus: true
-
-/ TODO: Feature spec
+= form_tag admin_search_path, method: :get do
+  = label_tag :search, 'Guest search:'
+  = text_field_tag :search, params[:search], placeholder: 'Search',
+  autofocus: true, autocomplete: 'off'
+  = submit_tag 'Search'
 
 = link_to 'Logout', admin_logout_path
 = link_to 'Clear filters', admin_path
