@@ -2,7 +2,11 @@ class Admin::AdminsController < ApplicationController
   before_action :require_admin
 
   def index
-    @guests = Guest.all
+    if params[:query] && params[:order]
+      @guests = Guest.order("#{params[:query]} #{params[:order]}")
+    else
+      @guests = Guest.all
+    end
   end
 
   private
