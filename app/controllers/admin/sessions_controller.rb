@@ -10,7 +10,7 @@ class Admin::SessionsController < ApplicationController
       flash[:success] = 'Welcome!'
       redirect_to admin_path
     else
-      flash[:error] = 'Invalid username and/or password.'
+      flash[:danger] = 'Invalid username and/or password.'
       render :new
     end
   end

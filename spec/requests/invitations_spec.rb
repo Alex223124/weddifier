@@ -54,7 +54,7 @@ describe 'Invitations Controller request', type: :request do
 
         it 'flashes an error message' do
           post guest_invitations_path(invitation.guest)
-          expect(flash[:error]).to be_present
+          expect(flash[:danger]).to be_present
         end
     end
     end

@@ -5,7 +5,7 @@ class InvitationsController < ApplicationController
     @guest = Guest.find(params[:guest_id])
 
     if @guest.invited?
-      flash[:error] = 'Guest was already invited.'
+      flash[:danger] = 'Guest was already invited.'
       return redirect_to admin_path
     else
       flash_message = "Successfully invited guest #{@guest.first_name}"\

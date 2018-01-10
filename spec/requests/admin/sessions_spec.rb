@@ -47,7 +47,7 @@ describe 'Admin::Sessions controller request', type: :request do
       end
 
       it 'displays a flash error' do
-        expect(flash[:error]).to be_present
+        expect(flash[:danger]).to be_present
       end
     end
   end

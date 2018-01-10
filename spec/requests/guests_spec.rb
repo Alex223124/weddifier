@@ -29,7 +29,7 @@ describe 'Guests Controller request', type: :request do
       end
 
       it 'displays a flash error message' do
-        expect(flash[:error]).to be_present
+        expect(flash[:danger]).to be_present
       end
 
       it 'displays what fields have errors' do
@@ -97,7 +97,7 @@ describe 'Guests Controller request', type: :request do
       before { delete guest_path(1) }
 
       it 'flashes an error message' do
-        expect(flash[:error]).to be_present
+        expect(flash[:danger]).to be_present
       end
 
       it 'redirects to admin path' do

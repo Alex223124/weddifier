@@ -13,7 +13,7 @@ class GuestsController < ApplicationController
       session[:guest_id] = @guest.id
       redirect_to thank_you_path
     else
-      flash[:error] = 'There are some errors in your form.'
+      flash[:danger] = 'There are some errors in your form.'
       render :new
     end
   end
@@ -22,7 +22,7 @@ class GuestsController < ApplicationController
     begin
       @guest = Guest.find(params[:id])
     rescue ActiveRecord::RecordNotFound
-      flash[:error] = 'Guest does not exist.'
+      flash[:danger] = 'Guest does not exist.'
       return redirect_to admin_path
     end
 
