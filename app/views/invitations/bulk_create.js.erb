@@ -1,0 +1,18 @@
+<%= render 'shared/js_flash', message: @flash[:message], type: @flash[:type] %>
+
+if ("<%= @flash[:type].to_s %>" === 'success') {
+  // Using [<%= @guest_ids %>] in case @guest_ids is nil, in which case it
+  // will be blank, thus we will get an empty array and forEach will not fail.
+
+  // Using this approach to use the same render :bulk_create on the controller
+  // action for both valid and invalid params[:guest_ids].
+
+  // Flatten array of ids: e.g. [1] for one guest, [[1], [2]] for multiple.
+  var guestIDS = [].concat.apply([], [<%= @guest_ids %>]);
+
+  guestIDS.forEach((guestID) => {
+    var row = document.querySelector(`
+      input[name="guest_ids[]"][value="${guestID}"]`).parentNode.parentNode;
+    row.remove();
+  });
+}

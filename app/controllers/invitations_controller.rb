@@ -30,10 +30,42 @@ class InvitationsController < ApplicationController
 
   def bulk_create
     unless params[:guest_ids]
-      flash[:warning] = 'Please select a guest.'
-      return redirect_to admin_path
+      message = 'Please select a guest.'
+
+      respond_to do |format|
+        format.html do
+          flash[:warning] = message
+          return redirect_to admin_path
+        end
+
+        format.js do
+          @flash = js_flash(message, :warning)
+          return render :bulk_create
+        end
+      end
     end
 
+    bulk_invite(params[:guest_ids])
+
+    respond_to do |format|
+      message = 'Guests invited successfully.'
+
+      format.html do
+        flash[:success] = message
+        redirect_to admin_path
+      end
+
+      format.js do
+        @flash = js_flash(message, :success)
+        @guest_ids = params[:guest_ids].map(&:to_i)
+        render :bulk_create
+      end
+    end
+  end
+
+  private
+
+  def bulk_invite(guest_ids)
     ActiveRecord::Base.transaction do
       params[:guest_ids].each do |guest_id|
         guest = Guest.find guest_id
@@ -43,8 +75,5 @@ class InvitationsController < ApplicationController
         Invitation.create!(guest: guest)
       end
     end
-
-    flash[:success] = 'Guests invited successfully.'
-    redirect_to admin_path
   end
 end

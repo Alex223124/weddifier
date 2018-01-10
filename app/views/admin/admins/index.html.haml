@@ -15,9 +15,9 @@
 .d-inline-block
   = button_to 'Clear filters', admin_path, method: :get, class: 'btn btn-secondary'
 
-= bootstrap_form_tag url: admin_update_guests_path do |f|
+= bootstrap_form_tag url: admin_update_guests_path, remote: true do |f|
 
-  = f.submit 'Invite Selected', class: 'btn btn-success mt-3'
+  = f.submit 'Invite Selected', class: 'btn btn-success mt-3', data: { disable_with: 'Inviting...' }
   - all = @guests.size
   - invited = @guests.where(invited: true).size
   - remaining = all - invited
