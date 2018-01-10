@@ -4,18 +4,12 @@ require 'sucker_punch/testing/inline'
 describe 'Invitations Controller request', type: :request do
   context 'POST create' do
     context 'when logged out' do
-      it 'redirects to admin login path' do
-        post guest_invitations_path(1)
-        expect(response).to redirect_to admin_login_path
+      it_behaves_like 'a logged out admin' do
+        let(:action) { post guest_invitations_path(1) }
       end
     end
 
     context 'when logged in' do
-      def admin_login
-        admin = Fabricate(:admin)
-        post admin_login_path, params: { email: admin.email, password: admin.password }
-      end
-
       before { admin_login }
 
       context 'when guest has no invitation' do
@@ -68,18 +62,12 @@ describe 'Invitations Controller request', type: :request do
 
   context 'POST bulk_create' do
     context 'when logged out' do
-      it 'redirects to admin login path' do
-        post admin_update_guests_path
-        expect(response).to redirect_to admin_login_path
+      it_behaves_like 'a logged out admin' do
+        let(:action) { post admin_update_guests_path }
       end
     end
 
     context 'when logged in' do
-      def admin_login
-        admin = Fabricate(:admin)
-        post admin_login_path, params: { email: admin.email, password: admin.password }
-      end
-
       before { admin_login }
 
       it 'invites selected guests' do

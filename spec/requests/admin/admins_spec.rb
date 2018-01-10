@@ -4,26 +4,19 @@ require 'sucker_punch/testing/inline'
 describe 'Admin::Admins controller request', type: :request do
   context 'when admin is not logged in' do
     context 'GET index' do
-      it 'redirects to admin login path' do
-        get admin_path
-        expect(response).to redirect_to admin_login_path
+      it_behaves_like 'a logged out admin' do
+        let(:action) { get admin_path }
       end
     end
 
     context 'GET search' do
-      it 'redirects to admin login path' do
-        get admin_search_path
-        expect(response).to redirect_to admin_login_path
+      it_behaves_like 'a logged out admin' do
+        let(:action) { get admin_search_path }
       end
     end
   end
 
   context 'when admin is logged in' do
-    def admin_login
-      admin = Fabricate(:admin)
-      post admin_login_path, params: { email: admin.email, password: admin.password }
-    end
-
     before { admin_login }
 
     context 'GET index' do
