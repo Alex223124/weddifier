@@ -36,7 +36,6 @@
         %th= admin_filter('phone')
         %th= admin_filter('invited')
         %th Remove
-    %tbody
     - @guests.each do |guest|
       %tr
         %td= check_box_tag 'guest_ids[]', guest.id
