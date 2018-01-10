@@ -70,6 +70,18 @@ describe 'Invitations Controller request', type: :request do
     context 'when logged in' do
       before { admin_login }
 
+      context 'if no guests were selected' do
+        it 'redirects to admin path if no guest ids where passed' do
+          post admin_update_guests_path
+          expect(response).to redirect_to admin_path
+        end
+
+        it 'flashes a warning' do
+          post admin_update_guests_path
+          expect(flash[:warning]).to be_present
+        end
+      end
+
       it 'invites selected guests' do
         guest1 = Fabricate(:guest)
         guest2 = Fabricate(:guest)

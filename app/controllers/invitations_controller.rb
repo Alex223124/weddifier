@@ -29,6 +29,11 @@ class InvitationsController < ApplicationController
   end
 
   def bulk_create
+    unless params[:guest_ids]
+      flash[:warning] = 'Please select a guest.'
+      return redirect_to admin_path
+    end
+
     ActiveRecord::Base.transaction do
       params[:guest_ids].each do |guest_id|
         guest = Guest.find guest_id
