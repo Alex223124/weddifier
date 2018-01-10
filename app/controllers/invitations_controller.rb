@@ -1,4 +1,6 @@
 class InvitationsController < ApplicationController
+  before_action :require_admin
+
   def create
     @guest = Guest.find(params[:guest_id])
 
@@ -24,5 +26,20 @@ class InvitationsController < ApplicationController
 
       invitation = Invitation.create(guest: @guest)
     end
+  end
+
+  def bulk_create
+    ActiveRecord::Base.transaction do
+      params[:guest_ids].each do |guest_id|
+        guest = Guest.find guest_id
+
+        next if guest.invited?
+
+        Invitation.create!(guest: guest)
+      end
+    end
+
+    flash[:success] = 'Guests invited successfully.'
+    redirect_to admin_path
   end
 end

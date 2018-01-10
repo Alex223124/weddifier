@@ -10,10 +10,13 @@ Rails.application.routes.draw do
   namespace :admin do
     get '', to: 'admins#index'
     get '/search', to: 'admins#search', as: 'search'
-    post '/update-guests', to: 'admins#update'
 
     get '/login', to: 'sessions#new'
     post '/login', to: 'sessions#create'
     get 'logout', to: 'sessions#destroy'
+  end
+
+  scope '/admin' do
+    post '/update-guests', to: 'invitations#bulk_create', as: 'admin_update_guests'
   end
 end

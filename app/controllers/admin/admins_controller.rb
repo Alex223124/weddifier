@@ -14,34 +14,9 @@ module Admin
       end
     end
 
-    def update
-      ActiveRecord::Base.transaction do
-        params[:guest_ids].each do |guest_id|
-          guest = Guest.find guest_id
-
-          next if guest.invited?
-
-          Invitation.create!(guest: guest)
-        end
-      end
-
-      flash[:success] = 'Guests invited successfully.'
-      redirect_to admin_path
-    end
-
     def search
       @guests = Guest.full_search(params[:search])
       render :index
-    end
-
-    private
-
-    def require_admin
-      redirect_to admin_login_path unless admin_logged_in?
-    end
-
-    def admin_logged_in?
-      !!session[:admin_id].present?
     end
   end
 end
