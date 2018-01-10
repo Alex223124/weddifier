@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/bootstrap-ruby/rails-bootstrap-forms.git
+  revision: e28fb18b9823b86fda1a7c3f46891c59e26061ef
+  branch: master
+  specs:
+    bootstrap_form (4.0.0.dev)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -250,6 +257,7 @@ PLATFORMS
 DEPENDENCIES
   bcrypt
   bootstrap (~> 4.0.0.beta3)
+  bootstrap_form!
   byebug
   capybara (~> 2.13)
   coffee-rails (~> 4.2)

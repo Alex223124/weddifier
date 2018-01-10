@@ -1,28 +1,35 @@
-%h1 Registro
+%section.register
+  .register-title
+    %h1.display-2 Our Wedding
+  .register-main
+    %h2 Register
 
-- if @guest.errors.any?
-  %ul
-  - @guest.errors.full_messages.each do |message|
-    %li= message
+    - if @guest.errors.any?
+      %ul
+      - @guest.errors.full_messages.each do |message|
+        %li= message
+
+    .row
+      .col-md-12
+        = bootstrap_form_for @guest do |f|
+          .row
+            .col-md-3
+              = f.text_field :first_name, required: true, icon: 'user', tabindex: 1
+              = f.text_field :father_surname, required: true, tabindex: 3
+              = f.phone_field :phone, required: true, help: 'Must be 10 characters long.', tabindex: 5
+            .col-md-3
+              = f.text_field :last_name, tabindex: 2
+              = f.text_field :mother_surname, required: true, tabindex: 4
+              = f.email_field :email, required: true, tabindex: 6
+          .row
+            .col-md-3
+              = f.submit 'Register', class: 'btn btn-success mt-3', tabindex: 7
 
 
-= form_for @guest do |f|
-  = f.label :first_name
-  = f.text_field :first_name, required: true
+  .register-footer
+    .row.mt-4
+      .col-md-7
+        %p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem corporis maxime, deserunt quibusdam distinctio minus quaerat quas? Natus nihil suscipit quae omnis eum vel illum, inventore dicta! Odio facere, vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+      .col-md-5
 
-  = f.label :last_name
-  = f.text_field :last_name
-
-  = f.label :father_surname
-  = f.text_field :father_surname, required: true
-
-  = f.label :mother_surname
-  = f.text_field :mother_surname, required: true
-
-  = f.label :phone
-  = f.phone_field :phone, required: true
-
-  = f.label :email
-  = f.email_field :email, required: true
-
-  = f.submit 'Register'
+  .media-footer

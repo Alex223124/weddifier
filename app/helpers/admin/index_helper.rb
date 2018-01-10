@@ -1,19 +1,20 @@
 module Admin::IndexHelper
   def guest_invite_status(guest)
     if guest.invited?
-      'Invited'
+      button_to 'Invited', admin_path, remote: true, disabled: true,
+        class: 'btn btn-outline-success'
     else
-      link_to 'Invite', guest_invitations_path(guest), method: :post,
-        remote: true
+      link_to 'Invite', guest_invitations_path(guest), remote: true,
+        method: :post, class: 'btn btn-success'
     end
   end
 
   def guest_remove_link(guest)
     if guest.invited?
-      ''
+      raw ''
     else
       link_to 'Remove', guest_path(guest), method: :delete, data:
-        { confirm: 'Are you sure?' }, remote: true
+        { confirm: 'Are you sure?' }, remote: true, class: 'btn btn-outline-danger'
     end
   end
 

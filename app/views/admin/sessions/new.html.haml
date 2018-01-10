@@ -1,10 +1,17 @@
-%h1 Admin Login
+.admin-login
+  .row
+    .col-md-4
+    .col-md-4
+      %h1 Admin Login
+    .col-md-4
 
-= form_tag do
-  = label_tag :email
-  = email_field_tag :email, params[:email] || '', required: true
+.row
+  .col-md-4
+  .col-md-4
+    = bootstrap_form_tag do |f|
+      = f.email_field :email, value: params[:email], required: true
 
-  = label_tag :password
-  = text_field_tag :password, '', required: true
+      = f.text_field :password, required: true
 
-  = submit_tag 'Login'
+      = f.submit 'Login', class: 'btn btn-success'
+  .col-md-4

@@ -1,28 +1,42 @@
-%h1 Registrations
+%h1 Registered Guests
 
-= form_tag admin_search_path, method: :get do
-  = label_tag :search, 'Guest search:'
-  = text_field_tag :search, params[:search], placeholder: 'Search',
-  autofocus: true, autocomplete: 'off'
-  = submit_tag 'Search'
+.row
+  .col-md-4
+    = form_tag admin_search_path, method: :get, class: 'mb-3 form-inline' do
+      .form-group
+        = label_tag :search, 'Guest search:'
+        = text_field_tag :search, params[:search], placeholder: 'Search',
+        autofocus: true, autocomplete: 'off', class: 'form-control ml-3 mr-3'
+      .form-group
+        = submit_tag 'Search', class: 'btn btn-primary'
 
-= link_to 'Logout', admin_logout_path
-= link_to 'Clear filters', admin_path
+.d-inline-block
+  = button_to 'Logout', admin_logout_path, method: :get, class: 'btn btn-secondary'
+.d-inline-block
+  = button_to 'Clear filters', admin_path, method: :get, class: 'btn btn-secondary'
 
-= form_tag admin_update_guests_path do
-  = submit_tag 'Invite Selected'
+= bootstrap_form_tag url: admin_update_guests_path do |f|
 
-  %table
-    %tr
-      %th= check_box_tag :select_all
-      %th= admin_filter('first_name')
-      %th= admin_filter('last_name')
-      %th= admin_filter('father_surname')
-      %th= admin_filter('mother_surname')
-      %th= admin_filter('email')
-      %th= admin_filter('phone')
-      %th= admin_filter('invited')
-      %th Remove
+  = f.submit 'Invite Selected', class: 'btn btn-success mt-3'
+  - all = @guests.size
+  - invited = @guests.where(invited: true).size
+  - remaining = all - invited
+
+  %span.d-block.text-right.text-secondary= "Displaying all guests: (#{all}) - Invited: (#{invited}) - Remaining: (#{remaining})"
+
+  %table.table.table-hover.table-bordered.text-center.mt-3
+    %thead
+      %tr
+        %th= check_box_tag :select_all
+        %th= admin_filter('first_name')
+        %th= admin_filter('last_name')
+        %th= admin_filter('father_surname')
+        %th= admin_filter('mother_surname')
+        %th= admin_filter('email')
+        %th= admin_filter('phone')
+        %th= admin_filter('invited')
+        %th Remove
+    %tbody
     - @guests.each do |guest|
       %tr
         %td= check_box_tag 'guest_ids[]', guest.id
@@ -34,3 +48,7 @@
         %td= guest.phone
         %td= guest_invite_status(guest)
         %td= guest_remove_link(guest)
+
+= bootstrap_form_tag url: admin_update_guests_path do |f|
+  = f.submit 'Invite Selected', class: 'btn btn-success mb-3'
+
