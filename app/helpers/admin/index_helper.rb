@@ -32,6 +32,6 @@ module Admin::IndexHelper
   end
 
   def format_date(date)
-    date.strftime("%A %d %B %l:%M%P") # 03/14/2014 9:09pm
+    date.in_time_zone('America/Mexico_City').strftime("%A %d %B %l:%M%P") # 03/14/2014 9:09pm
   end
 end
