@@ -18,13 +18,11 @@ module Admin::IndexHelper
     end
   end
 
-  def admin_filter(attribute)
-    name = to_filter_name(attribute)
-
+  def admin_filter(attribute, link_name = to_filter_name(attribute))
     if params[:order].blank? || params[:order] == 'desc'
-      link_to name, admin_path(query: attribute, order: 'asc')
+      link_to link_name, admin_path(query: attribute, order: 'asc')
     elsif params[:order] == 'asc'
-      link_to name, admin_path(query: attribute, order: 'desc')
+      link_to link_name, admin_path(query: attribute, order: 'desc')
     end
   end
 
