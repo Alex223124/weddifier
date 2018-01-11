@@ -14,6 +14,12 @@ function currentDate() {
   return `${dayName} ${dayNumber} ${month} ${time}`;
 }
 
+function setCurrentDateFor(guestID) {
+  var row = document.querySelector(`
+    input[name="guest_ids[]"][value="${guestID}"]`).parentNode.parentNode;
+  row.lastElementChild.innerHTML = currentDate();
+}
+
 function updateInvitedCounter(newInvitesCount) {
   var oldTotaInvitedCount = Number(document.getElementById(
     'all-invited-guests-counter').innerHTML);
@@ -32,7 +38,7 @@ function updateRemainingCounter(newInvitesCount) {
     newRemainingCount;
 }
 
-function uncheckCheckBoxes() {
+function uncheckCheckboxes() {
   document.querySelectorAll('input[type="checkbox"').forEach((input) => {
     input.checked = false;
   });
@@ -82,7 +88,7 @@ if ("<%= @flash[:type].to_s %>" === 'success') {
       newInvitesCount += 1
       row.remove();
       document.querySelector('tbody').append(row);
-      row.lastElementChild.innerHTML = currentDate();
+      setCurrentDateFor(guestID)
       disableInviteButtonFor(guestID);
       disableRemoveButtonFor(guestID);
     }
