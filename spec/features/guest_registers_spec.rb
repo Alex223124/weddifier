@@ -9,6 +9,13 @@ feature 'User registration' do
     expect(Guest.count).to eq(1)
   end
 
+  scenario 'User registers successfully and tries to register again' do
+    visit root_path
+    fill_form_correctly
+    visit root_path
+    expect(page).to have_current_path(home_path)
+  end
+
   scenario 'User vists root path and registers unsuccessfully' do
     expect(Guest.count).to eq(0)
     visit root_path
