@@ -36,6 +36,8 @@
         %th= admin_filter('phone')
         %th= admin_filter('invited')
         %th Remove
+        %th= admin_filter('created_at')
+        %th= admin_filter('invited_at')
     - @guests.each do |guest|
       %tr
         %td= check_box_tag 'guest_ids[]', guest.id
@@ -47,6 +49,8 @@
         %td= guest.phone
         %td= guest_invite_status(guest)
         %td= guest_remove_link(guest)
+        %td= format_date(guest.created_at)
+        %td= format_date(guest.invitation.created_at) if guest.invitation
 
 = bootstrap_form_tag url: admin_update_guests_path do |f|
   = f.submit 'Invite Selected', class: 'btn btn-success mb-3'

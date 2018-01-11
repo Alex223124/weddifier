@@ -32,4 +32,8 @@ module Admin::IndexHelper
     first, last = attribute.split('_')
     [first.capitalize, last].join(' ')
   end
+
+  def format_date(date)
+    date.strftime("%A %d %B %l:%M%P") # 03/14/2014 9:09pm
+  end
 end
