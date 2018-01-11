@@ -25,7 +25,8 @@ if ("<%= @flash[:type].to_s %>" === 'success') {
     row.remove();
   });
 
-  var oldTotaInvitedCount = document.querySelectorAll('.invited').length;
+  var oldTotaInvitedCount = Number(document.getElementById(
+    'all-invited-guests-counter').innerHTML);
   var newTotalInvitedCount = oldTotaInvitedCount + newInvitesCount;
   var oldRemainingCount = Number(document.getElementById(
     'all-remaining-guests-counter').innerHTML);
