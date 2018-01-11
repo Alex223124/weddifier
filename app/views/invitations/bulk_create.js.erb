@@ -9,10 +9,41 @@ if ("<%= @flash[:type].to_s %>" === 'success') {
 
   // Flatten array of ids: e.g. [1] for one guest, [[1], [2]] for multiple.
   var guestIDS = [].concat.apply([], [<%= @guest_ids %>]);
+  var newInvitesCount = 0;
+  var includedAlreadyInvitedGuests = false;
 
   guestIDS.forEach((guestID) => {
     var row = document.querySelector(`
       input[name="guest_ids[]"][value="${guestID}"]`).parentNode.parentNode;
+
+    if (row.classList.contains('invited')) {
+      includedAlreadyInvitedGuests = true;
+      return
+    }
+
+    newInvitesCount += 1
     row.remove();
   });
+
+  var oldTotaInvitedCount = document.querySelectorAll('.invited').length;
+  var newTotalInvitedCount = oldTotaInvitedCount + newInvitesCount;
+  var oldRemainingCount = Number(document.getElementById(
+    'all-remaining-guests-counter').innerHTML);
+  var newRemainingCount = oldRemainingCount - newInvitesCount;
+
+  document.getElementById('all-invited-guests-counter').innerHTML =
+    newTotalInvitedCount
+
+  document.getElementById('all-remaining-guests-counter').innerHTML =
+    newRemainingCount;
+
+  document.querySelectorAll('input[type="checkbox"').forEach((input) => {
+    input.checked = false;
+  });
+
+  if (includedAlreadyInvitedGuests) {
+    <%= render 'shared/js_flash',
+      message: 'Sent invites successfully to uninvited guests.',
+      type: 'success' %>
+  }
 }

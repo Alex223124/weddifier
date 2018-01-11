@@ -22,7 +22,7 @@
   - invited = @guests.where(invited: true).size
   - remaining = all - invited
 
-  %span.d-block.text-right.text-secondary= "Displaying  guests: Total: (#{all}) - Invited: (#{invited}) - Remaining: (#{remaining})"
+  %span.d-block.text-right.text-secondary= raw "Displaying  guests: Total: (<span id='all-guests-counter'>#{all}</span>) - Invited: (<span id='all-invited-guests-counter'>#{invited}</span>) - Remaining: (<span id='all-remaining-guests-counter'>#{remaining}</span>)"
 
   %table.table.table-hover.table-bordered.text-center.mt-3
     %thead
@@ -39,7 +39,7 @@
         %th= admin_filter('created_at', 'Signed up at')
         %th= admin_filter('invited_at')
     - @guests.each do |guest|
-      %tr
+      %tr{class: guest.invited? ? 'invited' : '' }
         %td= check_box_tag 'guest_ids[]', guest.id
         %td= guest.first_name
         %td= guest.last_name
