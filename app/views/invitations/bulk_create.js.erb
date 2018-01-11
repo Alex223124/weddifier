@@ -1,3 +1,62 @@
+function currentDate() {
+  var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
+  'Friday', 'Saturday'];
+  var monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'];
+  var today = new Date();
+  var dayName = dayNames[today.getDay()];
+  var dayNumber = today.getDate();
+  var month = monthNames[today.getMonth()];
+  var time = today.toLocaleString('en-US',
+    { hour: 'numeric', minute:'numeric', hour12: true }).replace('PM', 'pm')
+    .replace(' ', '');
+
+  return `${dayName} ${dayNumber} ${month} ${time}`;
+}
+
+function updateInvitedCounter(newInvitesCount) {
+  var oldTotaInvitedCount = Number(document.getElementById(
+    'all-invited-guests-counter').innerHTML);
+  var newTotalInvitedCount = oldTotaInvitedCount + newInvitesCount;
+
+  document.getElementById('all-invited-guests-counter').innerHTML =
+    newTotalInvitedCount
+}
+
+function updateRemainingCounter(newInvitesCount) {
+  var oldRemainingCount = Number(document.getElementById(
+    'all-remaining-guests-counter').innerHTML);
+  var newRemainingCount = oldRemainingCount - newInvitesCount;
+
+  document.getElementById('all-remaining-guests-counter').innerHTML =
+    newRemainingCount;
+}
+
+function uncheckCheckBoxes() {
+  document.querySelectorAll('input[type="checkbox"').forEach((input) => {
+    input.checked = false;
+  });
+}
+
+function disableInviteButtonFor(guestID) {
+  var inviteRowButton = document.querySelector(
+    `a[href="/guests/${guestID}/invitations"]`);
+  inviteRowButton.classList.remove('btn-success');
+  inviteRowButton.classList.add('btn-outline-success', 'btn-disabled',
+    'btn-outline-success.disabled');
+  inviteRowButton.parentNode.innerHTML = `
+    <form class="button_to" method="post" action="/admin" data-remote="true">
+      <input disabled="disabled" class="btn btn-outline-success" type="submit" value="Invited">
+    </form>
+  `
+}
+
+function disableRemoveButtonFor(guestID) {
+  var removeRowButton = document.querySelector(
+    `a[href="/guests/${guestID}"]`);
+  removeRowButton.remove();
+}
+
 <%= render 'shared/js_flash', message: @flash[:message], type: @flash[:type] %>
 
 if ("<%= @flash[:type].to_s %>" === 'success') {
@@ -10,39 +69,30 @@ if ("<%= @flash[:type].to_s %>" === 'success') {
   // Flatten array of ids: e.g. [1] for one guest, [[1], [2]] for multiple.
   var guestIDS = [].concat.apply([], [<%= @guest_ids %>]);
   var newInvitesCount = 0;
-  var includedAlreadyInvitedGuests = false;
+  var requestIncludedAlreadyInvitedGuests = false;
 
   guestIDS.forEach((guestID) => {
     var row = document.querySelector(`
       input[name="guest_ids[]"][value="${guestID}"]`).parentNode.parentNode;
 
     if (row.classList.contains('invited')) {
-      includedAlreadyInvitedGuests = true;
+      requestIncludedAlreadyInvitedGuests = true;
       return
+    } else {
+      newInvitesCount += 1
+      row.remove();
+      document.querySelector('tbody').append(row);
+      row.lastElementChild.innerHTML = currentDate();
+      disableInviteButtonFor(guestID);
+      disableRemoveButtonFor(guestID);
     }
-
-    newInvitesCount += 1
-    row.remove();
   });
 
-  var oldTotaInvitedCount = Number(document.getElementById(
-    'all-invited-guests-counter').innerHTML);
-  var newTotalInvitedCount = oldTotaInvitedCount + newInvitesCount;
-  var oldRemainingCount = Number(document.getElementById(
-    'all-remaining-guests-counter').innerHTML);
-  var newRemainingCount = oldRemainingCount - newInvitesCount;
+  updateInvitedCounter(newInvitesCount)
+  updateRemainingCounter(newInvitesCount)
+  uncheckCheckboxes(newInvitesCount)
 
-  document.getElementById('all-invited-guests-counter').innerHTML =
-    newTotalInvitedCount
-
-  document.getElementById('all-remaining-guests-counter').innerHTML =
-    newRemainingCount;
-
-  document.querySelectorAll('input[type="checkbox"').forEach((input) => {
-    input.checked = false;
-  });
-
-  if (includedAlreadyInvitedGuests) {
+  if (requestIncludedAlreadyInvitedGuests) {
     <%= render 'shared/js_flash',
       message: 'Sent invites successfully to uninvited guests.',
       type: 'success' %>
