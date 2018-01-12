@@ -58,6 +58,7 @@ feature 'Admin search' do
     expect(page).to have_content('Successfully invited guest John')
     expect_invite_button_not_to_be_present
     expect_remove_button_not_to_be_present
+    expect(page).to have_content(format_date(john.invitation.created_at))
   end
 
   scenario 'Admin searches for a guest and bulk invites from search results', js: true do
