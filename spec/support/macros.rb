@@ -13,3 +13,26 @@ def admin_browser_login
 
   expect(page).to have_current_path(admin_path)
 end
+
+def expect_invite_button_to_be_present
+  expect(page).to have_selector('a', text: /\bInvite\b/)
+  expect(page).not_to have_selector('input[value="Invited"]')
+end
+
+def expect_invite_button_not_to_be_present
+  expect(page).to have_selector('input[value="Invited"]')
+  expect(page).not_to have_selector('a', text: /\bInvite\b/)
+end
+
+def expect_remove_button_to_be_present
+  expect(page).to have_selector('a', text: /\bRemove\b/)
+end
+
+def expect_remove_button_not_to_be_present
+  expect(page).not_to have_selector('a', text: /\bRemove\b/)
+end
+
+def search_for(guest_name)
+  fill_in 'Search', with: guest_name
+  click_on 'Search'
+end

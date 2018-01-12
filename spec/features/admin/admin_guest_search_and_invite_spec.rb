@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'capybara/poltergeist'
 
 feature 'Admin search' do
   let!(:john) { Fabricate(:guest, first_name: 'John') }
@@ -51,16 +50,19 @@ feature 'Admin search' do
 
   scenario 'Admin searches for a guest and single invites from search results', js: true do
     expect_invite_button_to_be_present
+    expect_remove_button_to_be_present
 
     search_for('john')
     click_on('Invite')
 
     expect(page).to have_content('Successfully invited guest John')
     expect_invite_button_not_to_be_present
+    expect_remove_button_not_to_be_present
   end
 
   scenario 'Admin searches for a guest and bulk invites from search results', js: true do
     expect_invite_button_to_be_present
+    expect_remove_button_to_be_present
 
     search_for('john')
     find(:css, "#select_all").set true
@@ -68,25 +70,11 @@ feature 'Admin search' do
 
     expect(page).to have_content('Guests invited successfully.')
     expect_invite_button_not_to_be_present
+    expect_remove_button_not_to_be_present
     expect(page).to have_content(format_date(john.invitation.created_at))
-  end
-
-  def expect_invite_button_to_be_present
-    expect(page).to have_selector('a', text: /\bInvite\b/)
-    expect(page).not_to have_selector('input[value="Invited"]')
-  end
-
-  def expect_invite_button_not_to_be_present
-    expect(page).to have_selector('input[value="Invited"]')
-    expect(page).not_to have_selector('a', text: /\bInvite\b/)
   end
 
   def format_date(date)
     date.in_time_zone('America/Mexico_City').strftime("%A %d %B %l:%M%P")
-  end
-
-  def search_for(guest_name)
-    fill_in 'Search', with: guest_name
-    click_on 'Search'
   end
 end
