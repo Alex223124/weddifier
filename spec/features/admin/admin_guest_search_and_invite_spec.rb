@@ -19,7 +19,7 @@ feature 'Admin search' do
     # end
 
     # Works but get a weird RSpec formatting error
-    Capybara.javascript_driver = :selenium_chrome_headless
+    # Capybara.javascript_driver = :selenium_chrome_headless
 
     # Can not connect
     # Capybara.javascript_driver = :webkit
