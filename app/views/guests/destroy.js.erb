@@ -1,6 +1,10 @@
+<%= render 'shared/js_admin_functions' =%>
 <%= render 'shared/js_flash', message: @flash[:message], type: @flash[:type] %>
 
 // Delete guest row.
 document.querySelector('a[href="/guests/<%= @guest.id %>"]')
   .closest('tr')
   .remove();
+
+updateTotalCounter(1)
+updateRemainingCounter(1)

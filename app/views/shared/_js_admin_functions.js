@@ -18,6 +18,13 @@ function setCurrentDateFor(guestID) {
   row.lastElementChild.innerHTML = currentDate();
 }
 
+function updateTotalCounter(deleteCount) {
+  var oldTotalGuestCount = Number(document.getElementById('all-guests-counter').innerHTML);
+  var newTotalGuestCount = oldTotalGuestCount - deleteCount;
+
+  document.getElementById('all-guests-counter').innerHTML = newTotalGuestCount;
+}
+
 function updateInvitedCounter(newInvitesCount) {
   var oldTotaInvitedCount = Number(document.getElementById('all-invited-guests-counter').innerHTML);
   var newTotalInvitedCount = oldTotaInvitedCount + newInvitesCount;
