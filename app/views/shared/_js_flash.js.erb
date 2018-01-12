@@ -8,10 +8,9 @@ if (existingFlash) existingFlash.remove();
 // Create and append new flash.
 newFlash = document.createElement('div');
 newFlash.classList.add('alert', 'alert-<%= type %>', 'alert-dismissible', 'fade', 'show');
-newFlash.innerHTML = `
-  <%= message %>
-  <button type="button" class="close" data-dismiss="alert">
-    <span>&times;</span>
-  </button>
-`;
+newFlash.innerHTML = "" +
+  "<%= message %>" +
+  '<button type="button" class="close" data-dismiss="alert">' +
+    "<span>&times;</span>" +
+  "/button>";
 document.querySelector('header .container').appendChild(newFlash);

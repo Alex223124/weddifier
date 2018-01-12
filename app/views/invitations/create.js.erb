@@ -3,7 +3,7 @@
 
 var guestID = <%= @guest.id %>
 var row = document.querySelector(
-  'a[href="/guests/<%= @guest.id %>/invitations"]').closest('tr');
+  'a[href="/guests/<%= @guest.id %>/invitations"]').parentNode.parentNode;
 row.remove();
 document.querySelector('tbody').appendChild(row);
 
