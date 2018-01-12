@@ -71,6 +71,13 @@ describe 'Guests Controller request', type: :request do
           post guests_path, params: { guest: attributes }
         }.to change(Guest, :count).by(1)
       end
+
+      context 'and registering a plus one' do
+        it 'redirects to new plus one path' do
+          new_guest = post_valid_guest_with_plus_one_option
+          expect(response).to redirect_to new_guest_plus_one_path(new_guest.id)
+        end
+      end
     end
   end
 

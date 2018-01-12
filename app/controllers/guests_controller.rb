@@ -11,7 +11,13 @@ class GuestsController < ApplicationController
     if @guest.save
       flash[:success] = 'You have successfully registered.'
       session[:guest_id] = @guest.id
-      redirect_to thank_you_path
+
+      if params[:guest][:plus_one] == '1'
+        redirect_to new_guest_plus_one_path(@guest.id)
+      else
+        redirect_to thank_you_path
+      end
+
     else
       flash[:danger] = 'There are some errors in your form.'
       render :new

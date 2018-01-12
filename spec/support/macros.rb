@@ -1,3 +1,15 @@
+def post_valid_guest_with_plus_one_option
+  post guests_path, params: {
+    guest: Fabricate.attributes_for(:guest).merge(plus_one: '1')}
+  Guest.last
+end
+
+def post_valid_plus_one(leader)
+  post guest_plus_one_index_path(
+    plus_one: Fabricate.attributes_for(:guest), guest_id: leader.id)
+  Guest.last.plus_one
+end
+
 def admin_login
   admin = Fabricate(:admin)
   post admin_login_path, params: { email: admin.email, password: admin.password }

@@ -2,16 +2,16 @@
   .register-title
     %h1.display-2 Our Wedding
   .register-main
-    %h2 Register
+    %h2= "#{@leader.first_name}, please register your plus one"
 
-    - if @guest.errors.any?
+    - if @plus_one.errors.any?
       %ul
-      - @guest.errors.full_messages.each do |message|
+      - @plus_one.errors.full_messages.each do |message|
         %li= message
 
     .row
       .col-md-9
-        = bootstrap_form_for @guest do |f|
+        = bootstrap_form_for @plus_one, as: :plus_one, url: guest_plus_one_index_path(@leader) do |f|
           .row
             .col-md-3
               = f.text_field :first_name, required: true, icon: 'user', tabindex: 1
@@ -23,10 +23,8 @@
               = f.email_field :email, required: true, tabindex: 6
           .row
             .col-md-12
-              = f.check_box :plus_one, label: 'Coming with another person? (Plus one)', data: { toggle: 'tooltip', placement: 'top', title: 'You will be able to add it on the next page.' }, checked: false
-          .row
-            .col-md-3
               = f.submit 'Register', class: 'btn btn-success mt-3', tabindex: 7
+              = link_to 'Cancel plus one', thank_you_path, class: 'btn btn-secondary mt-3'
 
   .register-footer
     .row.mt-4

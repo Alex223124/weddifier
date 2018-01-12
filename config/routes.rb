@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   resources :guests, only: [:new, :create, :destroy] do
     resources :invitations, only: [:create]
+    resources :plus_one, only: [:new, :create], controller: 'plus_ones'
   end
 
   namespace :admin do
