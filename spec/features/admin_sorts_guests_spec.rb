@@ -12,6 +12,13 @@ feature 'Admin sorts guests' do
     admin_browser_login
   end
 
+  scenario 'Admin visits admin page and sees non invited guests on top' do
+    Fabricate(:invitation, guest: a_guest)
+    visit admin_path
+
+    expect(b_guest.first_name).to appear_before(a_guest.first_name)
+  end
+
   scenario 'Admin sorts guests by first name and clears sorts' do
     click_link 'First name'
     expect(a_guest.first_name).to appear_before(b_guest.first_name)
