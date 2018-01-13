@@ -4,9 +4,7 @@ module Admin
 
     def index
       if params[:query] && params[:order]
-        if params[:query] == 'invited'
-          @guests = Guest.order("invited #{params[:order]}")
-        elsif params[:query] == 'invited_at'
+        if params[:query] == 'invited_at'
           @guests = Guest.order(invited: :desc).order("invitations.created_at #{params[:order]}")
         elsif params[:query] == 'relationship'
           @guests = Guest.order("-id #{params[:order]}")
