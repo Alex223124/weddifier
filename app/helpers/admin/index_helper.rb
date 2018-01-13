@@ -19,10 +19,16 @@ module Admin::IndexHelper
   end
 
   def admin_filter(attribute, link_name = to_filter_name(attribute))
-    if params[:order].blank? || params[:order] == 'desc'
+    # Only change order if clicking on same link.
+    if params[:query] == attribute
+      if params[:order] == 'desc'
+        link_to link_name, admin_path(query: attribute, order: 'asc')
+      elsif params[:order] == 'asc'
+        link_to link_name, admin_path(query: attribute, order: 'desc')
+      end
+    # Else start ascending.
+    else
       link_to link_name, admin_path(query: attribute, order: 'asc')
-    elsif params[:order] == 'asc'
-      link_to link_name, admin_path(query: attribute, order: 'desc')
     end
   end
 

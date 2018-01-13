@@ -112,4 +112,21 @@ feature 'Admin sorts guests' do
     click_link 'Invited at'
     expect(a_guest.first_name).to appear_before(b_guest.first_name)
   end
+
+  scenario 'Admin clicks any sort, it should be ascending on first click.'\
+    ' Clicking it again should sort descending. All the other filters should'\
+    ' start ascending.' do
+    click_link 'First name'
+    expect(a_guest.first_name).to appear_before(b_guest.first_name)
+    click_link 'First name'
+    expect(b_guest.first_name).to appear_before(a_guest.first_name)
+
+    visit admin_path
+
+    click_link 'First name'
+    click_link 'Last name'
+    expect(a_guest.first_name).to appear_before(b_guest.first_name)
+    click_link 'Last name'
+    expect(b_guest.first_name).to appear_before(a_guest.first_name)
+  end
 end
