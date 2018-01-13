@@ -7,7 +7,7 @@ end
 def post_valid_plus_one(leader)
   post guest_plus_one_index_path(
     plus_one: Fabricate.attributes_for(:guest), guest_id: leader.id)
-  Guest.last.plus_one
+  Guest.last
 end
 
 def admin_login

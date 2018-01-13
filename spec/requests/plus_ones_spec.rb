@@ -41,7 +41,7 @@ describe 'PlusOnes controller request', type: :request do
         end
 
         it 'has a leader id session set' do
-          expect(session[:guest_id]).to eq(Guest.last.id)
+          expect(session[:guest_id]).to eq(Guest.first.id)
         end
 
         it 'flashes a success message' do
@@ -53,7 +53,7 @@ describe 'PlusOnes controller request', type: :request do
         end
 
         it 'sets the plus one id to the session' do
-          expect(session[:plus_one_id]).to eq(Guest.last.plus_one.id)
+          expect(session[:plus_one_id]).to eq(Guest.last.id)
         end
       end
 
