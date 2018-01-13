@@ -24,7 +24,7 @@
 
   %span.d-block.text-right.text-secondary= raw "Displaying  guests: Total: (<span id='all-guests-counter'>#{all}</span>) - Invited: (<span id='all-invited-guests-counter'>#{invited}</span>) - Remaining: (<span id='all-remaining-guests-counter'>#{remaining}</span>)"
 
-  %table.table.table-hover.table-bordered.text-center.mt-3
+  %table.table.table-hover.table-bordered.table-sm.text-center.mt-3
     %thead
       %tr
         %th= check_box_tag :select_all
@@ -38,6 +38,7 @@
         %th Remove
         %th= admin_filter('created_at', 'Signed up at')
         %th= admin_filter('invited_at')
+        %th= admin_filter('relationship', 'Plus one / Leader')
     - @guests.each do |guest|
       %tr{class: guest.invited? ? 'invited' : '' }
         %td= check_box_tag 'guest_ids[]', guest.id
@@ -51,6 +52,13 @@
         %td= guest_remove_link(guest)
         %td= format_date(guest.created_at)
         %td= format_date(guest.invitation.created_at) if guest.invitation
+        %td
+          - if guest.plus_one
+            Plus one:
+            = link_to guest.plus_one.full_name, admin_search_path(search: guest.plus_one.email)
+          - elsif guest.leader
+            Leader:
+            = link_to guest.leader.full_name, admin_search_path(search: guest.leader.email)
 
 = bootstrap_form_tag url: admin_update_guests_path do |f|
   = f.submit 'Invite Selected', class: 'btn btn-success mb-3'

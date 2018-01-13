@@ -1,5 +1,5 @@
 class Guest < ActiveRecord::Base
-  default_scope { includes(:invitation)
+  default_scope { includes(:invitation).includes(:plus_one)
     .order(invited: :asc) }
 
   has_one :plus_one, class_name: 'Guest', foreign_key: 'leader_id'
@@ -27,5 +27,9 @@ class Guest < ActiveRecord::Base
       "%#{query}%", "%#{query}%", "%#{query}%",
       "%#{query}%", "%#{query}%", "%#{query}%"
     )
+  end
+
+  def full_name
+    "#{first_name} #{last_name} #{father_surname} #{mother_surname}"
   end
 end
