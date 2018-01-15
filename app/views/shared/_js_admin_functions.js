@@ -13,9 +13,17 @@ function currentDate() {
 }
 
 function setCurrentDateFor(guestID) {
+  var headerRow = document.querySelector('tr');
   var row = document.querySelector('' +
     'input[name="guest_ids[]"][value="' + guestID + '"]').parentNode.parentNode;
-  row.children[row.children.length - 2].innerHTML = currentDate();
+  var currentDateColumnIndex;
+
+  for (var i = 0; i < headerRow.children.length; i++) {
+    var th = headerRow.children[i]
+    if (th.innerText === 'Invited at') currentDateColumnIndex = i
+  }
+
+  row.children[currentDateColumnIndex].innerHTML = currentDate();
 }
 
 function updateTotalCounter(deleteCount) {
