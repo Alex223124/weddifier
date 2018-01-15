@@ -63,4 +63,78 @@ describe Guest, type: :model do
         .to include(guest)
     end
   end
+
+  context '#set_plus_one_id_on_leader' do
+    it 'sets the plus_one_id attribute on the leader when updated' do
+      leader = Fabricate(:guest)
+      plus_one = Fabricate(:guest)
+
+      expect(leader.plus_one_id).to be_nil
+      leader.plus_one = plus_one
+      leader.save
+      expect(leader.reload.plus_one_id).to eq(plus_one.id)
+    end
+
+    it 'changes the plus_one_id attribute when plus one is changed' do
+      leader = Fabricate(:guest)
+      plus_one = Fabricate(:guest)
+      another_one = Fabricate(:guest)
+
+      leader.plus_one = plus_one
+      leader.save
+
+      leader.plus_one = another_one
+      leader.save
+
+      expect(leader.reload.plus_one_id).to eq(another_one.id)
+    end
+
+    it 'only changes the plus_one_id attribute when there is a plus one' do
+      leader = Fabricate(:guest)
+      leader.first_name = 'Updated'
+      leader.save
+
+      expect(leader.plus_one_id).to be_nil
+    end
+
+    it 'changes the plus_one_id attribute on create too' do
+      plus_one = Fabricate(:guest)
+      leader = Fabricate(:guest, plus_one: plus_one)
+
+      expect(leader.plus_one_id).to eq(plus_one.id)
+    end
+  end
+
+  context '#leader?' do
+    it 'returns true if he is the leader' do
+      plus_one = Fabricate(:guest)
+      leader = Fabricate(:guest, plus_one: plus_one)
+
+      expect(leader.leader?).to be(true)
+    end
+
+    it 'returns false if he is the plus one' do
+      plus_one = Fabricate(:guest)
+      leader = Fabricate(:guest, plus_one: plus_one)
+
+      expect(plus_one.leader?).to be(false)
+    end
+  end
+
+  context '#plus_one?' do
+    it 'returns true if he is the plus one' do
+      plus_one = Fabricate(:guest)
+      leader = Fabricate(:guest, plus_one: plus_one)
+
+      expect(leader.plus_one?).to be(false)
+    end
+
+    it 'returns false if he is the leader' do
+      plus_one = Fabricate(:guest)
+      leader = Fabricate(:guest, plus_one: plus_one)
+
+      expect(plus_one.plus_one?).to be(true)
+    end
+  end
 end
+

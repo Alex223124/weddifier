@@ -29,12 +29,14 @@ ActiveRecord::Schema.define(version: 20180108044521) do
     t.string "phone"
     t.string "email"
     t.boolean "invited", default: false
+    t.bigint "plus_one_id"
     t.bigint "leader_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_guests_on_email"
     t.index ["first_name"], name: "index_guests_on_first_name"
     t.index ["leader_id"], name: "index_guests_on_leader_id"
+    t.index ["plus_one_id"], name: "index_guests_on_plus_one_id"
   end
 
   create_table "invitations", force: :cascade do |t|

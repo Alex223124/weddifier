@@ -5,14 +5,18 @@ module Admin
     def index
       if params[:query] && params[:order]
         if params[:query] == 'invited_at'
-          @guests = Guest.order(invited: :desc).order("invitations.created_at #{params[:order]}")
+          @guests = Guest.order(invited: :desc).order("invitations.created_at #{params[:order]}").includes(:leader)
         elsif params[:query] == 'relationship'
-          @guests = Guest.order("-id #{params[:order]}")
+          if params[:order] == 'asc'
+            @guests = Guest.joins(:plus_one).order(created_at: :desc)
+          elsif params[:order] == 'desc'
+            @guests = Guest.where(leader_id: nil).where(plus_one_id: nil)
+          end
         else
-          @guests = Guest.order("#{params[:query]} #{params[:order]}")
+          @guests = Guest.order("#{params[:query]} #{params[:order]}").includes(:leader)
         end
       else
-        @guests = Guest.all.order(invited: :asc)
+        @guests = Guest.all.order(invited: :asc).includes(:leader)
       end
     end
 

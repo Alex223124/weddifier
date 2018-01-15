@@ -13,6 +13,7 @@ class PlusOnesController < ApplicationController
 
     if @plus_one.save
       @leader.plus_one = @plus_one
+      @leader.save
 
       session[:plus_one_id] = @plus_one.id
       flash[:success] = 'You have successfully registered a plus one.'

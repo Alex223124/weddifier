@@ -11,3 +11,11 @@ Admin::Admin.create(email: 'admin@example.com', password: 'test')
 200.times do
   Fabricate(:guest)
 end
+
+(1..50).each do |n|
+  leader = Guest.find(n)
+  plus_one = Guest.find(200 - n)
+
+  leader.plus_one = plus_one
+  leader.save
+end

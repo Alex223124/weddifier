@@ -7,15 +7,26 @@ function currentDate() {
   var dayName = dayNames[today.getDay()];
   var dayNumber = today.getDate();
   var month = monthNames[today.getMonth()];
-  var time = today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }).replace('PM', 'pm').replace(' ', '');
+  var time = today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }).replace('PM', 'pm').replace('AM', 'am').replace(' ', '');
 
   return dayName + ' ' + dayNumber + ' ' + month + ' ' + time;
 }
 
 function setCurrentDateFor(guestID) {
+  var headerRow = document.querySelector('tr');
   var row = document.querySelector('' +
     'input[name="guest_ids[]"][value="' + guestID + '"]').parentNode.parentNode;
-  row.lastElementChild.innerHTML = currentDate();
+  var currentDateColumnIndex;
+
+  for (var i = 0; i < headerRow.children.length; i++) {
+    var th = headerRow.children[i];
+    if (th.innerText === 'Invited at') {
+      currentDateColumnIndex = i;
+      break;
+    }
+  }
+
+  row.children[currentDateColumnIndex].innerHTML = currentDate();
 }
 
 function updateTotalCounter(deleteCount) {

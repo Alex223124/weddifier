@@ -32,9 +32,16 @@ class GuestsController < ApplicationController
       return redirect_to admin_path
     end
 
-    flash_message = "Successfully removed guest #{@guest.first_name}"\
-          " #{@guest.last_name} #{@guest.father_surname}"\
-          " #{@guest.mother_surname} - #{@guest.email}."
+    flash_message = "Successfully removed guest #{@guest.full_name} -"\
+      " #{@guest.email}."
+
+    if @guest.leader?
+      flash_message += " Also deleted plus one: #{@guest.plus_one.full_name}"\
+        " - #{@guest.plus_one.email}."
+    elsif @guest.plus_one?
+      flash_message += " #{@guest.leader.full_name} has no plus one now."
+    end
+
     @guest.destroy
 
     respond_to do |format|

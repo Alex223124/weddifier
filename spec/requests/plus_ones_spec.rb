@@ -55,6 +55,13 @@ describe 'PlusOnes controller request', type: :request do
         it 'sets the plus one id to the session' do
           expect(session[:plus_one_id]).to eq(Guest.last.id)
         end
+
+        it 'sets the leader plus_one_id to his plus one' do
+          leader = Guest.first
+          plus_one = Guest.last
+
+          expect(leader.plus_one_id).to eq(plus_one.id)
+        end
       end
 
       context 'with invalid inputs'
