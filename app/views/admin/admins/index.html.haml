@@ -54,10 +54,10 @@
         %td= format_date(guest.invitation.created_at) if guest.invitation
         %td
           - if guest.plus_one
-            Plus one:
+            My plus one:
             = link_to guest.plus_one.full_name, admin_search_path(search: guest.plus_one.email)
           - elsif guest.leader
-            Leader:
+            My leader:
             = link_to guest.leader.full_name, admin_search_path(search: guest.leader.email)
 
 = bootstrap_form_tag url: admin_update_guests_path do |f|

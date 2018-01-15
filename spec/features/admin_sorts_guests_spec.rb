@@ -113,6 +113,54 @@ feature 'Admin sorts guests' do
     expect(a_guest.first_name).to appear_before(b_guest.first_name)
   end
 
+  scenario 'Admin sorts guests by plus one / leader, see guests that have'\
+    'plus ones or see the ones that come alone' do
+    c_guest = Fabricate(:guest, first_name: 'C', last_name: 'C',
+      father_surname: 'C', mother_surname: 'C', email: 'c@c.com',
+      phone: 3333333333)
+    # A is the leader, B is the plus one.
+    a_guest.plus_one = b_guest
+    a_guest.save
+    visit admin_path
+
+    click_link 'Plus one / Leader'
+    expect(page.body).not_to include(c_guest.phone)
+    expect(page.body).to include(a_guest.phone)
+    expect(page.body).not_to include(b_guest.phone)
+
+
+    click_link 'Plus one / Leader'
+    expect(page.body).to include(c_guest.phone)
+    expect(page.body).not_to include(a_guest.phone)
+    expect(page.body).not_to include(b_guest.phone)
+  end
+
+  scenario 'Admin sorts guests by plus one / leader, see guests that have'\
+    'plus ones. Recently signed up guests at the top' do
+    c_guest = Fabricate(:guest, first_name: 'C', last_name: 'C',
+      father_surname: 'C', mother_surname: 'C', email: 'c@c.com',
+      phone: 3333333333)
+
+    d_guest = Fabricate(:guest, first_name: 'D', last_name: 'D',
+      father_surname: 'D', mother_surname: 'D', email: 'd@d.com',
+      phone: 4444444444)
+
+    e_guest = Fabricate(:guest, first_name: 'E', last_name: 'E',
+      father_surname: 'E', mother_surname: 'E', email: 'e@e.com',
+      phone: 5555555555)
+
+
+    a_guest.plus_one = b_guest
+    a_guest.save
+
+    c_guest.plus_one = e_guest
+    c_guest.save
+    visit admin_path
+
+    click_link 'Plus one / Leader'
+    expect(c_guest.phone).to appear_before(a_guest.phone)
+  end
+
   scenario 'Admin clicks any sort, it should be ascending on first click.'\
     ' Clicking it again should sort descending. All the other filters should'\
     ' start ascending.' do
