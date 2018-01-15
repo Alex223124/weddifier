@@ -19,8 +19,11 @@ function setCurrentDateFor(guestID) {
   var currentDateColumnIndex;
 
   for (var i = 0; i < headerRow.children.length; i++) {
-    var th = headerRow.children[i]
-    if (th.innerText === 'Invited at') currentDateColumnIndex = i
+    var th = headerRow.children[i];
+    if (th.innerText === 'Invited at') {
+      currentDateColumnIndex = i;
+      break;
+    }
   }
 
   row.children[currentDateColumnIndex].innerHTML = currentDate();
