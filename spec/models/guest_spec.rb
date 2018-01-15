@@ -104,4 +104,37 @@ describe Guest, type: :model do
       expect(leader.plus_one_id).to eq(plus_one.id)
     end
   end
+
+  context '#leader?' do
+    it 'returns true if he is the leader' do
+      plus_one = Fabricate(:guest)
+      leader = Fabricate(:guest, plus_one: plus_one)
+
+      expect(leader.leader?).to be(true)
+    end
+
+    it 'returns false if he is the plus one' do
+      plus_one = Fabricate(:guest)
+      leader = Fabricate(:guest, plus_one: plus_one)
+
+      expect(plus_one.leader?).to be(false)
+    end
+  end
+
+  context '#plus_one?' do
+    it 'returns true if he is the plus one' do
+      plus_one = Fabricate(:guest)
+      leader = Fabricate(:guest, plus_one: plus_one)
+
+      expect(leader.plus_one?).to be(false)
+    end
+
+    it 'returns false if he is the leader' do
+      plus_one = Fabricate(:guest)
+      leader = Fabricate(:guest, plus_one: plus_one)
+
+      expect(plus_one.plus_one?).to be(true)
+    end
+  end
 end
+

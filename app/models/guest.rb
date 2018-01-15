@@ -35,6 +35,14 @@ class Guest < ActiveRecord::Base
     "#{first_name} #{last_name} #{father_surname} #{mother_surname}"
   end
 
+  def leader?
+    !self.plus_one_id.nil?
+  end
+
+  def plus_one?
+    self.plus_one_id.nil? && !self.leader_id.nil?
+  end
+
   private
 
   def set_plus_one_id_on_leader

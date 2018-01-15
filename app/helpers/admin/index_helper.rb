@@ -10,11 +10,22 @@ module Admin::IndexHelper
   end
 
   def guest_remove_link(guest)
-    if guest.invited?
-      raw ''
+    return '' if guest.invited?
+
+    if guest.leader?
+      link_to 'Remove', guest_path(guest), method: :delete, data:
+        { confirm: 'Deleting a leader will delete his plus one, are you'\
+        ' sure you want to continue?' },
+        remote: true, class: 'btn btn-outline-danger'
+    elsif guest.plus_one?
+      link_to 'Remove', guest_path(guest), method: :delete, data:
+        { confirm: "You are deleting #{guest.leader.full_name}'s plus one."\
+          ' Are you sure you want to continue?' },
+        remote: true, class: 'btn btn-outline-danger'
     else
       link_to 'Remove', guest_path(guest), method: :delete, data:
-        { confirm: 'Are you sure?' }, remote: true, class: 'btn btn-outline-danger'
+        { confirm: 'Are you sure?' },
+        remote: true, class: 'btn btn-outline-danger'
     end
   end
 

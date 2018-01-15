@@ -98,6 +98,30 @@ describe 'Guests Controller request', type: :request do
         delete guest_path(guest)
         expect(flash[:success]).to be_present
       end
+
+      it 'if leader was deleted, flash that plus one was deleted' do
+        plus_one = Fabricate(:guest)
+        guest.plus_one = plus_one
+        guest.save
+        message = "Successfully removed guest #{guest.full_name} -"\
+          " #{guest.email}. Also deleted plus one: #{plus_one.full_name}"\
+          " - #{plus_one.email}."
+
+        delete guest_path(guest)
+        expect(flash[:success]).to eq(message)
+      end
+
+      it 'if plus one was deleted, flash that leader is now left without plus'\
+        ' one' do
+        plus_one = Fabricate(:guest)
+        guest.plus_one = plus_one
+        guest.save
+        message = "Successfully removed guest #{plus_one.full_name} -"\
+          " #{plus_one.email}. #{guest.full_name} has no plus one now."
+
+        delete guest_path(plus_one)
+        expect(flash[:success]).to eq(message)
+      end
     end
 
     context 'with invalid guest' do
