@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 feature 'Admin sorts guests' do
-  let!(:a_guest) { Fabricate(:guest, first_name: 'A', last_name: 'A',
-    father_surname: 'A', mother_surname: 'A', email: 'a@a.com',
+  let!(:a_guest) { Fabricate(:guest, first_name: 'AAAAA', last_name: 'AAAAA',
+    father_surname: 'AAAAA', mother_surname: 'AAAAA', email: 'a@a.com',
     phone: 1111111111) }
-  let!(:b_guest) { Fabricate(:guest, first_name: 'B', last_name: 'B',
-    father_surname: 'B', mother_surname: 'B', email: 'b@b.com',
+  let!(:b_guest) { Fabricate(:guest, first_name: 'BBBBB', last_name: 'BBBBB',
+    father_surname: 'BBBBB', mother_surname: 'BBBBB', email: 'b@b.com',
     phone: 2222222222) }
 
   background do
@@ -13,9 +13,16 @@ feature 'Admin sorts guests' do
   end
 
   scenario 'Admin visits admin page and sees non invited guests on top' do
+    c_guest = Fabricate(:guest, first_name: 'C', last_name: 'C',
+      father_surname: 'C', mother_surname: 'C', email: 'c@c.com',
+      phone: 3333333333)
     Fabricate(:invitation, guest: a_guest)
     visit admin_path
 
+    expect(b_guest.first_name).to appear_before(a_guest.first_name)
+  end
+
+  scenario 'Admin visits admin page and sees most recent sign ups on top' do
     expect(b_guest.first_name).to appear_before(a_guest.first_name)
   end
 
@@ -27,7 +34,7 @@ feature 'Admin sorts guests' do
     expect(b_guest.first_name).to appear_before(a_guest.first_name)
 
     click_button 'Clear filters'
-    expect(a_guest.first_name).to appear_before(b_guest.first_name)
+    expect(b_guest.first_name).to appear_before(a_guest.first_name)
   end
 
   scenario 'Admin sorts guests by last name' do
