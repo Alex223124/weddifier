@@ -33,13 +33,13 @@ module Admin::IndexHelper
     # Only change order if clicking on same link.
     if params[:query] == attribute
       if params[:order] == 'desc'
-        link_to link_name, admin_path(query: attribute, order: 'asc')
+        link_to link_name, admin_path(query: attribute, order: 'asc', link: link_name)
       elsif params[:order] == 'asc'
-        link_to link_name, admin_path(query: attribute, order: 'desc')
+        link_to link_name, admin_path(query: attribute, order: 'desc', link: link_name)
       end
     # Else start ascending.
     else
-      link_to link_name, admin_path(query: attribute, order: 'asc')
+      link_to link_name, admin_path(query: attribute, order: 'asc', link: link_name)
     end
   end
 

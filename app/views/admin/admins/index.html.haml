@@ -22,7 +22,10 @@
   - invited = @guests.where(invited: true).size
   - remaining = all - invited
 
-  %span.d-block.text-right.text-secondary= raw "Displaying  guests: Total: (<span id='all-guests-counter'>#{all}</span>) - Invited: (<span id='all-invited-guests-counter'>#{invited}</span>) - Remaining: (<span id='all-remaining-guests-counter'>#{remaining}</span>)"
+  .row
+    .col-md-12
+      %span.d-block.text-right.text-secondary= raw "Displaying  guests: Total: (<span id='all-guests-counter'>#{all}</span>) - Invited: (<span id='all-invited-guests-counter'>#{invited}</span>) - Remaining: (<span id='all-remaining-guests-counter'>#{remaining}</span>)"
+      %span.d-block.text-right.text-secondary= "Sorting by: #{@sort}"
 
   %table.table.table-hover.table-bordered.table-sm.text-center.mt-3
     %thead
