@@ -7,7 +7,7 @@ function currentDate() {
   var dayName = dayNames[today.getDay()];
   var dayNumber = today.getDate();
   var month = monthNames[today.getMonth()];
-  var time = today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }).replace('PM', 'pm').replace(' ', '');
+  var time = today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }).replace('PM', 'pm').replace('AM', 'am').replace(' ', '');
 
   return dayName + ' ' + dayNumber + ' ' + month + ' ' + time;
 }
@@ -15,7 +15,7 @@ function currentDate() {
 function setCurrentDateFor(guestID) {
   var row = document.querySelector('' +
     'input[name="guest_ids[]"][value="' + guestID + '"]').parentNode.parentNode;
-  row.lastElementChild.innerHTML = currentDate();
+  row.children[row.children.length - 2].innerHTML = currentDate();
 }
 
 function updateTotalCounter(deleteCount) {
