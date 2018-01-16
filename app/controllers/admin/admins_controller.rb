@@ -34,11 +34,11 @@ module Admin
       desc = (order == 'desc')
 
       if query == 'invited_at' || query == 'created_at'
-        desc ? "#{link_name} Recent to Old" : "#{link_name} Old to Recent"
+        desc ? "#{link_name}, Recent to Old" : "#{link_name}, Old to Recent"
       elsif query == 'relationship'
         desc ? 'Guests without plus one' : 'Guests with plus one'
       else
-        desc ? "#{link_name} Z-A / 9-0" : "#{link_name} A-Z / 0-9"
+        desc ? "#{link_name}, Z-A / 9-0" : "#{link_name}, A-Z / 0-9"
       end
     end
   end
