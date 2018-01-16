@@ -9,8 +9,14 @@ feature 'Guest registers and confirms invitation' do
     guest = Guest.last
     Fabricate(:invitation, guest: guest)
 
+    # Invitation email
     open_email(guest.email)
     current_email.click_link 'I am coming to the wedding!'
     expect(page).to have_content 'Your confirmation has been received!'
+
+    # Thank you email
+    open_email(guest.email)
+    expect(current_email).to have_content "Thank you #{guest.first_name}, "\
+      " for coming our wedding!"
   end
 end
