@@ -19,6 +19,7 @@ feature 'Admin sorts guests' do
     Fabricate(:invitation, guest: a_guest)
     visit admin_path
 
+    expect(page).to have_content 'Sorting by: No sorts / filters'
     expect(b_guest.first_name).to appear_before(a_guest.first_name)
   end
 
