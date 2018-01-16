@@ -84,6 +84,8 @@ GEM
     faker (1.8.7)
       i18n (>= 0.7)
     ffi (1.9.18)
+    figaro (1.1.1)
+      thor (~> 0.14)
     formatador (0.2.5)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
@@ -266,6 +268,7 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   fabrication
   faker
+  figaro
   guard-rspec
   haml
   jbuilder (~> 2.5)
