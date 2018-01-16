@@ -8,9 +8,8 @@ class InvitationsController < ApplicationController
       flash[:danger] = 'Guest was already invited.'
       return redirect_to admin_path
     else
-      flash_message = "Successfully invited guest #{@guest.first_name}"\
-          " #{@guest.last_name} #{@guest.father_surname}"\
-          " #{@guest.mother_surname} - #{@guest.email}."
+      flash_message = "Successfully invited guest #{@guest.full_name} -"\
+        " #{@guest.email}."
       respond_to do |format|
 
         format.html do
