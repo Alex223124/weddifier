@@ -5,9 +5,9 @@ class Invitation < ActiveRecord::Base
   after_commit :set_guest_invited_boolean, :send_invite
 
   def fulfill
-    self.fulfilled = true
-    self.token = nil
-    self.save
+    # Avoid calling after_commit callbacks again.
+    self.update_column(:fulfilled, true)
+    self.update_column(:token, nil)
     send_thanks
   end
 

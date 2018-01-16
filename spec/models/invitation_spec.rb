@@ -27,33 +27,31 @@ describe Invitation, type: :model do
   end
 
   context '#fulfill' do
-    let(:invitation) { Fabricate(:invitation) }
+    # Use let! to trigger :send_invite email and clear it because we are not
+    # testing that callback now.
+    let!(:invitation) { Fabricate(:invitation) }
 
-    # To avoid race conditions we don't actually "send" the email.
-    before { allow(invitation).to receive(:send_invite) }
-
+    # Clear :send_invite email.
+    before { ActionMailer::Base.deliveries.clear }
+    # Clear :send_thanks email.
     after { ActionMailer::Base.deliveries.clear }
 
     it 'sets the invitation fulfilled attribute to true' do
       expect(invitation.fulfilled).to be false
       invitation.fulfill
-      expect(invitation.fulfilled).to be true
+      expect(invitation.reload.fulfilled).to be true
     end
 
     it 'sets the token to nil' do
       expect(invitation.token).to be_present
       invitation.fulfill
-      expect(invitation.token).not_to be_present
-    end
-
-    it 'saves itself' do
-      expect_any_instance_of(Invitation).to receive(:save)
-      invitation.fulfill
+      expect(invitation.reload.token).not_to be_present
     end
 
     it 'sends thank you email' do
       invitation.fulfill
-      expect(ActionMailer::Base.deliveries.size).to eq(2)
+      # Thank you email (fulfillment) only.
+      expect(ActionMailer::Base.deliveries.size).to eq(1)
     end
   end
 
