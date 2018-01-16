@@ -62,7 +62,7 @@ function disableInviteButtonFor(guestID) {
   inviteRowButton.classList.add('btn-outline-success', 'btn-disabled', 'btn-outline-success.disabled');
   inviteRowButton.parentNode.innerHTML = "" +
     '<form class="button_to" method="post" action="/admin" data-remote="true">' +
-      '<input disabled="disabled" class="btn btn-outline-success" type="submit" value="Invited">' +
+      '<input disabled="disabled" class="btn" type="submit" value="Invited">' +
     "</form>";
 }
 

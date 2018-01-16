@@ -75,6 +75,11 @@ feature 'Admin search' do
     expect(page).to have_content(format_date(john.invitation.created_at))
   end
 
+  scenario 'Admin searches and sorting by status should reflect no sorts' do
+    search_for('john')
+    expect(page).to have_content('Sorting by: No sorts / filters')
+  end
+
   def format_date(date)
     date.in_time_zone('America/Mexico_City').strftime("%A %d %B %l:%M%P")
   end

@@ -1,5 +1,5 @@
 class InvitationsController < ApplicationController
-  before_action :require_admin
+  before_action :require_admin, except: [:confirm]
 
   def create
     @guest = Guest.find(params[:guest_id])
@@ -59,6 +59,19 @@ class InvitationsController < ApplicationController
         @guest_ids = params[:guest_ids].map(&:to_i)
         render :bulk_create
       end
+    end
+  end
+
+  def confirm
+    invitation = Invitation.find_by_token params[:token]
+
+    if invitation
+      invitation.fulfill
+      flash[:success] = 'Your confirmation has been received!'
+      redirect_to thank_you_path
+    else
+      flash[:danger] = 'Invalid token.'
+      redirect_to expired_token_path
     end
   end
 

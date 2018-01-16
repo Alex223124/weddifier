@@ -19,6 +19,7 @@ feature 'Admin sorts guests' do
     Fabricate(:invitation, guest: a_guest)
     visit admin_path
 
+    expect(page).to have_content 'Sorting by: No sorts / filters'
     expect(b_guest.first_name).to appear_before(a_guest.first_name)
   end
 
@@ -28,9 +29,11 @@ feature 'Admin sorts guests' do
 
   scenario 'Admin sorts guests by first name and clears sorts' do
     click_link 'First name'
+    expect(page).to have_content 'Sorting by: First name, A-Z / 0-9'
     expect(a_guest.first_name).to appear_before(b_guest.first_name)
 
     click_link 'First name'
+    expect(page).to have_content 'Sorting by: First name, Z-A / 9-0'
     expect(b_guest.first_name).to appear_before(a_guest.first_name)
 
     click_button 'Clear filters'
@@ -39,41 +42,51 @@ feature 'Admin sorts guests' do
 
   scenario 'Admin sorts guests by last name' do
     click_link 'Last name'
+    expect(page).to have_content 'Sorting by: Last name, A-Z / 0-9'
     expect(a_guest.last_name).to appear_before(b_guest.last_name)
 
     click_link 'Last name'
+    expect(page).to have_content 'Sorting by: Last name, Z-A / 9-0'
     expect(b_guest.last_name).to appear_before(a_guest.last_name)
   end
 
   scenario 'Admin sorts guests by father surname' do
     click_link 'Father surname'
+    expect(page).to have_content 'Sorting by: Father surname, A-Z / 0-9'
     expect(a_guest.father_surname).to appear_before(b_guest.father_surname)
 
     click_link 'Father surname'
+    expect(page).to have_content 'Sorting by: Father surname, Z-A / 9-0'
     expect(b_guest.father_surname).to appear_before(a_guest.father_surname)
   end
 
   scenario 'Admin sorts guests by mother surname' do
     click_link 'Mother surname'
+    expect(page).to have_content 'Sorting by: Mother surname, A-Z / 0-9'
     expect(a_guest.mother_surname).to appear_before(b_guest.mother_surname)
 
     click_link 'Mother surname'
+    expect(page).to have_content 'Sorting by: Mother surname, Z-A / 9-0'
     expect(b_guest.mother_surname).to appear_before(a_guest.mother_surname)
   end
 
   scenario 'Admin sorts guests by email' do
     click_link 'Email'
+    expect(page).to have_content 'Sorting by: Email , A-Z / 0-9'
     expect(a_guest.email).to appear_before(b_guest.email)
 
     click_link 'Email'
+    expect(page).to have_content 'Sorting by: Email , Z-A / 9-0'
     expect(b_guest.email).to appear_before(a_guest.email)
   end
 
   scenario 'Admin sorts guests by phone' do
     click_link 'Phone'
+    expect(page).to have_content 'Sorting by: Phone , A-Z / 0-9'
     expect(a_guest.phone).to appear_before(b_guest.phone)
 
     click_link 'Phone'
+    expect(page).to have_content 'Sorting by: Phone , Z-A / 9-0'
     expect(b_guest.phone).to appear_before(a_guest.phone)
   end
 
@@ -82,17 +95,62 @@ feature 'Admin sorts guests' do
     visit admin_path
 
     click_link 'Invited'
+    expect(page).to have_content 'Sorting by: Invited , non-invited first'
     expect(a_guest.first_name).to appear_before(b_guest.first_name)
 
     click_link 'Invited'
+    expect(page).to have_content 'Sorting by: Invited , confirmed first'
     expect(b_guest.first_name).to appear_before(a_guest.first_name)
+  end
+
+  scenario 'Admin sorts guests by invited and sees non-invited first,'\
+    'confirmed second and invited last' do
+    # Non-invited: b_guest
+    # Confirmed: a_guest
+    # Invited: c_guest
+
+    c_guest = Fabricate(:guest, first_name: 'CCCCC', last_name: 'CCCCC',
+      father_surname: 'CCCCC', mother_surname: 'CCCCC', email: 'c@c.com',
+      phone: 3333333333)
+    c_guest_invitation = Fabricate(:invitation, guest: c_guest)
+
+    a_guest_invitation = Fabricate(:invitation, guest: a_guest)
+    a_guest_invitation.fulfill
+    visit admin_path
+
+    click_link 'Invited'
+    expect(b_guest.first_name).to appear_before(a_guest.first_name)
+    expect(a_guest.first_name).to appear_before(c_guest.first_name)
+  end
+
+  scenario 'Admin sorts guests by invited again, and sees confirmed first'\
+    ', invited second and non invited last' do
+      # Confirmed: a_guest
+      # Invited: c_guest
+      # Non-invited: b_guest
+
+      c_guest = Fabricate(:guest, first_name: 'CCCCC', last_name: 'CCCCC',
+        father_surname: 'CCCCC', mother_surname: 'CCCCC', email: 'c@c.com',
+        phone: 3333333333)
+      c_guest_invitation = Fabricate(:invitation, guest: c_guest)
+
+      a_guest_invitation = Fabricate(:invitation, guest: a_guest)
+      a_guest_invitation.fulfill
+      visit admin_path
+
+      click_link 'Invited'
+      click_link 'Invited'
+      expect(a_guest.first_name).to appear_before(c_guest.first_name)
+      expect(c_guest.first_name).to appear_before(b_guest.first_name)
   end
 
   scenario 'Admin sorts guests by signed up at' do
     click_link 'Signed up at'
+    expect(page).to have_content 'Sorting by: Signed up at, Old to Recent'
     expect(a_guest.first_name).to appear_before(b_guest.first_name)
 
     click_link 'Signed up at'
+    expect(page).to have_content 'Sorting by: Signed up at, Recent to Old'
     expect(b_guest.first_name).to appear_before(a_guest.first_name)
   end
 
@@ -103,10 +161,12 @@ feature 'Admin sorts guests' do
     expect(a_guest.first_name).to appear_before(b_guest.first_name)
 
     click_link 'Invited at'
+    expect(page).to have_content 'Sorting by: Invited at, Old to Recent'
     expect(b_guest.first_name).to appear_before(a_guest.first_name)
 
     # Uninvited guests will always show up at the bottom.
     click_link 'Invited at'
+    expect(page).to have_content 'Sorting by: Invited at, Recent to Old'
     expect(b_guest.first_name).to appear_before(a_guest.first_name)
 
     Fabricate(:invitation, guest: a_guest)
@@ -131,12 +191,14 @@ feature 'Admin sorts guests' do
     visit admin_path
 
     click_link 'Plus one / Leader'
+    expect(page).to have_content 'Sorting by: Guests with plus one'
     expect(page.body).not_to include(c_guest.phone)
     expect(page.body).to include(a_guest.phone)
     expect(page.body).not_to include(b_guest.phone)
 
 
     click_link 'Plus one / Leader'
+    expect(page).to have_content 'Sorting by: Guests without plus one'
     expect(page.body).to include(c_guest.phone)
     expect(page.body).not_to include(a_guest.phone)
     expect(page.body).not_to include(b_guest.phone)

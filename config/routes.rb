@@ -8,6 +8,9 @@ Rails.application.routes.draw do
     resources :plus_one, only: [:new, :create], controller: 'plus_ones'
   end
 
+  get '/confirm/:token', to: 'invitations#confirm', as: 'confirm'
+  get '/expired-token', to: 'pages#expired_token', as: 'expired_token'
+
   namespace :admin do
     get '', to: 'admins#index'
     get '/search', to: 'admins#search', as: 'search'

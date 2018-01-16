@@ -37,6 +37,8 @@ end
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'shoulda-callback-matchers', '~> 1.1.1'
+  gem 'capybara-email'
 end
 
 group :development do

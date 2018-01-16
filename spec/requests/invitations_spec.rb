@@ -121,4 +121,38 @@ describe 'Invitations Controller request', type: :request do
       end
     end
   end
+
+  context 'GET confirm' do
+    context 'with valid token' do
+      let(:invitation) { Fabricate(:invitation) }
+
+      before do
+        get confirm_path(invitation.token)
+      end
+
+      it 'fulfills the invitation' do
+        expect(invitation.reload.fulfilled?).to be true
+      end
+
+      it 'flashes a success message' do
+        expect(flash[:success]).to be_present
+      end
+
+      it 'redirects to thank you path' do
+        expect(response).to redirect_to thank_you_path
+      end
+    end
+
+    context 'with invalid token' do
+      before { get confirm_path('123') }
+
+      it 'flashes an error message' do
+        expect(flash[:danger]).to be_present
+      end
+
+      it 'redirects to expired token page' do
+        expect(response).to redirect_to expired_token_path
+      end
+    end
+  end
 end

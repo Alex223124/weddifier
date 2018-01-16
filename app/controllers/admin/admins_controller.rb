@@ -14,6 +14,8 @@ module Admin
           elsif params[:order] == 'desc'
             @guests = Guest.where(leader_id: nil).where(plus_one_id: nil).order(invited: :asc).order(created_at: :desc)
           end
+        elsif params[:query] == 'invited'
+          @guests = Guest.order(invited: params[:order].to_sym).order("invitations.fulfilled IS TRUE desc").includes(:leader)
         else
           @guests = Guest.order("#{params[:query]} #{params[:order]}").includes(:leader)
         end
@@ -24,7 +26,8 @@ module Admin
     end
 
     def search
-      @guests = Guest.full_search(params[:search])
+      @sort = 'No sorts / filters'
+      @guests = Guest.full_search(params[:search]).includes(:leader)
       render :index
     end
 
@@ -37,6 +40,8 @@ module Admin
         desc ? "#{link_name}, Recent to Old" : "#{link_name}, Old to Recent"
       elsif query == 'relationship'
         desc ? 'Guests without plus one' : 'Guests with plus one'
+      elsif query == 'invited'
+        desc ? "#{link_name}, confirmed first" : "#{link_name}, non-invited first"
       else
         desc ? "#{link_name}, Z-A / 9-0" : "#{link_name}, A-Z / 0-9"
       end

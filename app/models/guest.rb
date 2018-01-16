@@ -24,8 +24,8 @@ class Guest < ActiveRecord::Base
 
   def self.full_search(query)
     self.where(
-      "first_name ILIKE ? OR last_name ILIKE ? OR father_surname ILIKE ? "\
-      "OR mother_surname ILIKE ? OR email ILIKE ? OR phone ILIKE ?",
+      "guests.first_name ILIKE ? OR guests.last_name ILIKE ? OR guests.father_surname ILIKE ? "\
+      "OR guests.mother_surname ILIKE ? OR guests.email ILIKE ? OR guests.phone ILIKE ?",
       "%#{query}%", "%#{query}%", "%#{query}%",
       "%#{query}%", "%#{query}%", "%#{query}%"
     )
@@ -41,6 +41,10 @@ class Guest < ActiveRecord::Base
 
   def plus_one?
     self.plus_one_id.nil? && !self.leader_id.nil?
+  end
+
+  def accepted_invitation?
+    self.invitation.fulfilled?
   end
 
   private
