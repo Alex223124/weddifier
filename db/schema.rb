@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20180108044521) do
 
   create_table "invitations", force: :cascade do |t|
     t.string "token"
+    t.boolean "fulfilled", default: false
     t.bigint "guest_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
