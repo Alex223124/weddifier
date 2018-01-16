@@ -127,9 +127,6 @@ describe 'Invitations Controller request', type: :request do
       let(:invitation) { Fabricate(:invitation) }
 
       before do
-        # Avoid race conditions when fulfilling (token to nil) the invitation
-        # before send_invite has had a chance to run.
-        allow_any_instance_of(ApplicationMailer).to receive(:send_invite)
         get confirm_path(invitation.token)
       end
 
