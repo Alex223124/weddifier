@@ -65,6 +65,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (>= 2.0, < 4.0)
+    capybara-email (2.5.0)
+      capybara (~> 2.4)
+      mail
     childprocess (0.8.0)
       ffi (~> 1.0, >= 1.0.11)
     coderay (1.1.2)
@@ -267,6 +270,7 @@ DEPENDENCIES
   bootstrap_form!
   byebug
   capybara (~> 2.13)
+  capybara-email
   coffee-rails (~> 4.2)
   fabrication
   faker
