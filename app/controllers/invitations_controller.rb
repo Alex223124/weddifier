@@ -1,5 +1,5 @@
 class InvitationsController < ApplicationController
-  before_action :require_admin
+  before_action :require_admin, except: [:confirm]
 
   def create
     @guest = Guest.find(params[:guest_id])
