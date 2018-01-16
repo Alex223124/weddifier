@@ -168,6 +168,39 @@ feature 'Admin sorts guests' do
     expect(c_guest.phone).to appear_before(a_guest.phone)
   end
 
+  scenario 'Admin sorts guests by plus one / leader, see non invited on top' do
+    a_guest.plus_one = b_guest
+    a_guest.save
+
+    c_guest = Fabricate(:guest, first_name: 'CCCCC', last_name: 'CCCCC',
+      father_surname: 'CCCCC', mother_surname: 'CCCCC', email: 'c@c.com',
+      phone: 3333333333)
+    d_guest = Fabricate(:guest, first_name: 'DDDDD', last_name: 'DDDDD',
+      father_surname: 'DDDDD', mother_surname: 'DDDDD', email: 'd@d.com',
+      phone: 4444444444)
+    d_guest.plus_one = c_guest
+    d_guest.save
+    Fabricate(:invitation, guest: d_guest)
+
+    visit admin_path
+    click_link 'Plus one / Leader'
+    expect(a_guest.first_name).to appear_before(d_guest.first_name)
+
+    e_guest = Fabricate(:guest, first_name: 'EEEEE', last_name: 'EEEEE',
+      father_surname: 'EEEEE', mother_surname: 'EEEEE', email: 'e@e.com',
+      phone: 5555555555)
+
+    f_guest = Fabricate(:guest, first_name: 'FFFFF', last_name: 'FFFFF',
+      father_surname: 'FFFFF', mother_surname: 'FFFFF', email: 'f@f.com',
+      phone: 6666666666)
+    Fabricate(:invitation, guest: f_guest)
+
+    visit admin_path
+    click_link 'Plus one / Leader'
+    click_link 'Plus one / Leader'
+    expect(e_guest.first_name).to appear_before(f_guest.first_name)
+  end
+
   scenario 'Admin clicks any sort, it should be ascending on first click.'\
     ' Clicking it again should sort descending. All the other filters should'\
     ' start ascending.' do
