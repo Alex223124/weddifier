@@ -62,6 +62,19 @@ class InvitationsController < ApplicationController
     end
   end
 
+  def confirm
+    invitation = Invitation.find_by_token params[:token]
+
+    if invitation
+      invitation.fulfill
+      flash[:success] = 'Your confirmation has been received!'
+      redirect_to thank_you_path
+    else
+      flash[:danger] = 'Invalid token.'
+      redirect_to expired_token_path
+    end
+  end
+
   private
 
   def bulk_invite(guest_ids)

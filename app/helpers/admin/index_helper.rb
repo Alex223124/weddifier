@@ -1,8 +1,14 @@
 module Admin::IndexHelper
   def guest_invite_status(guest)
     if guest.invited?
-      button_to 'Invited', admin_path, remote: true, disabled: true,
-        class: 'btn btn-outline-success'
+      if guest.accepted_invitation?
+        button_to 'Confirmed', admin_path, remote: true, disabled: true,
+          class: 'btn btn-primary'
+      else
+        button_to 'Invited', admin_path, remote: true, disabled: true,
+          class: 'btn'
+      end
+
     else
       link_to 'Invite', guest_invitations_path(guest), remote: true,
         method: :post, class: 'btn btn-success'

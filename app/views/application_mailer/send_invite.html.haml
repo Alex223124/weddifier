@@ -2,4 +2,6 @@
 %html{:lang => "en"}
 %body
   %p= "Hello #{@guest.first_name}, you are invited to our wedding."
+  %p Please confirm your assistance by clicking this link:
+  = link_to 'I am coming to the wedding!', confirm_url(@guest.invitation.token)
 
