@@ -88,6 +88,47 @@ feature 'Admin sorts guests' do
     expect(b_guest.first_name).to appear_before(a_guest.first_name)
   end
 
+  scenario 'Admin sorts guests by invited and sees non-invited first,'\
+    'confirmed second and invited last' do
+    # Non-invited: b_guest
+    # Confirmed: a_guest
+    # Invited: c_guest
+
+    c_guest = Fabricate(:guest, first_name: 'CCCCC', last_name: 'CCCCC',
+      father_surname: 'CCCCC', mother_surname: 'CCCCC', email: 'c@c.com',
+      phone: 3333333333)
+    c_guest_invitation = Fabricate(:invitation, guest: c_guest)
+
+    a_guest_invitation = Fabricate(:invitation, guest: a_guest)
+    a_guest_invitation.fulfill
+    visit admin_path
+
+    click_link 'Invited'
+    expect(b_guest.first_name).to appear_before(a_guest.first_name)
+    expect(a_guest.first_name).to appear_before(c_guest.first_name)
+  end
+
+  scenario 'Admin sorts guests by invited again, and sees confirmed first'\
+    ', invited second and non invited last' do
+      # Confirmed: a_guest
+      # Invited: c_guest
+      # Non-invited: b_guest
+
+      c_guest = Fabricate(:guest, first_name: 'CCCCC', last_name: 'CCCCC',
+        father_surname: 'CCCCC', mother_surname: 'CCCCC', email: 'c@c.com',
+        phone: 3333333333)
+      c_guest_invitation = Fabricate(:invitation, guest: c_guest)
+
+      a_guest_invitation = Fabricate(:invitation, guest: a_guest)
+      a_guest_invitation.fulfill
+      visit admin_path
+
+      click_link 'Invited'
+      click_link 'Invited'
+      expect(a_guest.first_name).to appear_before(c_guest.first_name)
+      expect(c_guest.first_name).to appear_before(b_guest.first_name)
+  end
+
   scenario 'Admin sorts guests by signed up at' do
     click_link 'Signed up at'
     expect(a_guest.first_name).to appear_before(b_guest.first_name)
