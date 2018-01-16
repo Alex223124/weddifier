@@ -25,19 +25,4 @@ feature 'User registration' do
     expect(page).to have_content('Phone is too short')
     expect(Guest.count).to eq(0)
   end
-
-  def fill_form_correctly
-    fill_in 'First name' , with: 'John'
-    fill_in 'Last name' , with: 'Doe'
-    fill_in 'Father surname' , with: 'Mckenzie'
-    fill_in 'Mother surname' , with: 'Sullivan'
-    fill_in 'Phone' , with: '1234567890'
-    fill_in 'Email' , with: 'example@email.com'
-    click_on 'Register'
-  end
-
-  def fill_form_incorrectly
-    fill_in 'First name' , with: 'John'
-    click_on 'Register'
-  end
 end
