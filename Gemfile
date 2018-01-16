@@ -37,6 +37,7 @@ end
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'shoulda-callback-matchers', '~> 1.1.1'
 end
 
 group :development do
