@@ -36,7 +36,7 @@ feature 'Admin sorts guests' do
     expect(page).to have_content 'Sorting by: First name, Z-A / 9-0'
     expect(b_guest.first_name).to appear_before(a_guest.first_name)
 
-    click_button 'Clear filters'
+    click_link 'Clear filters'
     expect(b_guest.first_name).to appear_before(a_guest.first_name)
   end
 

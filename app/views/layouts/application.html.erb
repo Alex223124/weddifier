@@ -4,6 +4,7 @@
     <title>Weddings</title>
     <%= csrf_meta_tags %>
 
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -25,7 +26,7 @@
         </div>
     </header>
     <main>
-      <div class="container<%= current_admin_path? ? '-fluid' : '' %>">
+      <div class="wrapper">
         <%= yield %>
       </div>
     </main>

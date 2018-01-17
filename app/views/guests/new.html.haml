@@ -1,37 +1,55 @@
-%section.register
-  .register-title
-    %h1.display-2 Our Wedding
-  .register-main
-    %h2 Register
+#particles-js
 
-    - if @guest.errors.any?
-      %ul
-      - @guest.errors.full_messages.each do |message|
-        %li= message
+.jumbotron.jumbotron-fluid.hero
+  .container
+    %section.home
+      .row
+        .col-md-12
+          %h1.display-1.text-center John & Wendy
+      .row
+        .col-md-12
+          %h2.display-4.text-center Our wedding
+      .row
+        .col-md-12
+          #see-more-arrow-down.text-center.position-absolute
+            = fa_icon 'sort-desc'
 
-    .row
-      .col-md-9
+
+.container-fluid.second-background
+  %section.register
+    .row.position-relative.z-index-1
+      .col-md-12.col-xl-6
+        .register-title
+          %h1.display-2.text-center.mt-5.js-animate-left Guest Book
+      .col-md-6
+    .row.position-relative.z-index-1
+      .col-md-12.col-xl-6
+        .register-main
+          %h2.text-center.js-animate-left Please fill in your details:
+        - if @guest.errors.any?
+          %ul.js-animate-left.js-signup-form-has-errors
+            - @guest.errors.full_messages.each do |message|
+              %li= message
+      .col-md-6
+
+
+    .row.mt-4
+      .half-background
+      .col-md-12.col-xl-6
         = bootstrap_form_for @guest do |f|
           .row
             .col-md-3
+            .col-md-3.js-animate-left
               = f.text_field :first_name, required: true, icon: 'user', tabindex: 1
               = f.text_field :father_surname, required: true, tabindex: 3
               = f.phone_field :phone, required: true, help: 'Must be 10 characters long.', tabindex: 5
-            .col-md-3
+            .col-md-3.js-animate-left
               = f.text_field :last_name, tabindex: 2
               = f.text_field :mother_surname, required: true, tabindex: 4
               = f.email_field :email, required: true, tabindex: 6
-          .row
-            .col-md-12
-              = f.check_box :plus_one, label: 'Coming with another person? (Plus one)', data: { toggle: 'tooltip', placement: 'top', title: 'You will be able to add it on the next page.' }, checked: false
-          .row
             .col-md-3
-              = f.submit 'Register', class: 'btn btn-success mt-3', tabindex: 7
-
-  .register-footer
-    .row.mt-4
-      .col-md-7
-        %p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem corporis maxime, deserunt quibusdam distinctio minus quaerat quas? Natus nihil suscipit quae omnis eum vel illum, inventore dicta! Odio facere, vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-      .col-md-5
-
-  .media-footer
+          .row
+            .col-md-12.text-center.mt-4.js-animate-left
+              = f.check_box :plus_one, label: 'Coming with another person? (Plus one)', data: { toggle: 'tooltip', placement: 'top', title: 'You will be able to add it on the next page.' }, checked: true
+              = f.submit 'Register', class: 'btn my-btn-success mt-4', tabindex: 7
+      .col-md-6

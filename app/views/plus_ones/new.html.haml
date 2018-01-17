@@ -1,35 +1,40 @@
-%section.register
-  .register-title
-    %h1.display-2 Our Wedding
-  .register-main
-    %h2= "#{@leader.first_name}, please register your plus one"
+.container-fluid.second-background.plus-one-container#js-plus-one-container
+  %section.register
+    .row.position-relative.z-index-1
+      .col-md-12.col-xl-6
+        .register-title
+          %h1.display-2.text-center.mt-5.js-animate-left Guest Book
+      .col-md-6
+    .row.position-relative.z-index-1
+      .col-md-12.col-xl-6
+        .register-main
+          %h2.text-center.js-animate-left
+            %span.my-single-highlight="#{@leader.first_name}"
+            , please register your plus one
+        - if @plus_one.errors.any?
+          %ul.js-animate-left.js-signup-form-has-errors
+            - @plus_one.errors.full_messages.each do |message|
+              %li= message
+      .col-md-6
 
-    - if @plus_one.errors.any?
-      %ul
-      - @plus_one.errors.full_messages.each do |message|
-        %li= message
 
-    .row
-      .col-md-9
+    .row.mt-4
+      .half-background
+      .col-md-12.col-xl-6
         = bootstrap_form_for @plus_one, as: :plus_one, url: guest_plus_one_index_path(@leader) do |f|
           .row
             .col-md-3
+            .col-md-3.js-animate-left
               = f.text_field :first_name, required: true, icon: 'user', tabindex: 1
               = f.text_field :father_surname, required: true, tabindex: 3
               = f.phone_field :phone, required: true, help: 'Must be 10 characters long.', tabindex: 5
-            .col-md-3
+            .col-md-3.js-animate-left
               = f.text_field :last_name, tabindex: 2
               = f.text_field :mother_surname, required: true, tabindex: 4
               = f.email_field :email, required: true, tabindex: 6
+            .col-md-3
           .row
-            .col-md-12
-              = f.submit 'Register', class: 'btn btn-success mt-3', tabindex: 7
-              = link_to 'Cancel plus one', thank_you_path, class: 'btn btn-secondary mt-3'
-
-  .register-footer
-    .row.mt-4
-      .col-md-7
-        %p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem corporis maxime, deserunt quibusdam distinctio minus quaerat quas? Natus nihil suscipit quae omnis eum vel illum, inventore dicta! Odio facere, vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-      .col-md-5
-
-  .media-footer
+            .col-md-12.text-center.mt-4.js-animate-left
+              = f.submit 'Register', class: 'btn my-btn-success mt-3', tabindex: 7
+              = link_to 'Cancel plus one', thank_you_path, class: 'btn btn-secondary mt-3', data: { confirm: 'Are you sure you want to cancel your plus one registration?' }
+      .col-md-6
