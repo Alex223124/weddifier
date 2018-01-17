@@ -12,9 +12,14 @@ document.addEventListener 'turbolinks:load', (event) ->
 
   # -- Fade effect checks --
   alreadyFaded = false
+  isMobile = false
   pxBeforeToggle = do ->
     # To toggle fadeRegistrationFromLeft earlier on small devices.
-    if $(window).width() >= 1500 then 1000 else 300
+    if $(window).width() <= 1500
+      isMobile = true
+      1050
+    else
+      300
 
   # -- Action: Scroll to bottom / Fade in form if form has errors --
   if document.querySelector('.js-signup-form-has-errors') && !document.querySelector('#js-plus-one-container')
@@ -29,12 +34,15 @@ document.addEventListener 'turbolinks:load', (event) ->
     if $(window).scrollTop() + $(window).height() > $(document).height() - pxBeforeToggle
       unless alreadyFaded == true
         fadeRegistrationFromLeft()
+        alreadyFaded = true
 
   # -- Listener: Fade on arrow click + Scroll to bottom --
   $('#see-more-arrow-down').on 'click', (event) ->
     scrollToBottom()
-    $('#guest_first_name').focus()
-    setTimeout(fadeRegistrationFromLeft, 1000)
+    $('#guest_first_name').focus() unless isMobile == true
+    unless alreadyFaded == true
+      fadeRegistrationFromLeft()
+      alreadyFaded = true
 
 # -- Function: Fade effect --
 fadeRegistrationFromLeft = ->
