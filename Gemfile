@@ -15,6 +15,7 @@ gem "bootstrap_form",
     git: "https://github.com/bootstrap-ruby/rails-bootstrap-forms.git",
     branch: "master"
 gem 'figaro'
+gem "font-awesome-rails"
 
 gem 'rails', '~> 5.1.4'
 gem 'sqlite3'

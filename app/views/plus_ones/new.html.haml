@@ -2,7 +2,9 @@
   .register-title
     %h1.display-2 Our Wedding
   .register-main
-    %h2= "#{@leader.first_name}, please register your plus one"
+    %h2
+      %span.my-single-highlight="#{@leader.first_name}"
+      , please register your plus one
 
     - if @plus_one.errors.any?
       %ul
@@ -24,7 +26,7 @@
           .row
             .col-md-12
               = f.submit 'Register', class: 'btn btn-success mt-3', tabindex: 7
-              = link_to 'Cancel plus one', thank_you_path, class: 'btn btn-secondary mt-3'
+              = link_to 'Cancel plus one', thank_you_path, class: 'btn btn-secondary mt-3', data: { confirm: 'Are you sure you want to cancel your plus one registration?' }
 
   .register-footer
     .row.mt-4

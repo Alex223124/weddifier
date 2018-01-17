@@ -8,25 +8,32 @@
         = text_field_tag :search, params[:search], placeholder: 'Search',
         autofocus: true, autocomplete: 'off', class: 'form-control ml-3 mr-3'
       .form-group
-        = submit_tag 'Search', class: 'btn btn-primary'
+        = button_tag class: 'btn btn-primary' do
+          = fa_icon 'search', text: 'Search'
+  .col-md-8
 
-.d-inline-block
-  = button_to 'Logout', admin_logout_path, method: :get, class: 'btn btn-secondary'
-.d-inline-block
-  = button_to 'Clear filters', admin_path, method: :get, class: 'btn btn-secondary'
 
 = bootstrap_form_tag url: admin_update_guests_path, remote: true do |f|
 
-  = f.submit 'Invite Selected', class: 'btn btn-success mt-3', data: { disable_with: 'Inviting...' }
   - all = @guests.size
   - invited = @guests.where(invited: true).size
   - remaining = all - invited
   - fulfilled = @guests.where("invitations.fulfilled IS TRUE").references(:invitations).size
 
   .row
-    .col-md-12
-      %span.d-block.text-right.text-white= raw "Displaying guests: Total: (<span id='all-guests-counter'>#{all}</span>) - Invited: (<span id='all-invited-guests-counter'>#{invited}</span>) - Remaining: (<span id='all-remaining-guests-counter'>#{remaining}</span>) - Confirmed: (<span id='all-fulfilled-guests-counter'>#{fulfilled}</span>)"
-      %span.d-block.text-right.text-white= "Sorting by: #{@sort}"
+    .col-md-6
+      .d-inline-block
+        = f.button class: 'btn btn-success', id: 'bulk-invite-button', data: { disable_with: 'Inviting...' } do
+          = fa_icon 'paper-plane', text: 'Invite Selected'
+      .d-inline-block
+        = link_to admin_logout_path, method: :get, class: 'btn btn-secondary' do
+          = fa_icon 'sign-out', text: 'Logout'
+      .d-inline-block.mr-3
+        = link_to admin_path, method: :get, class: 'btn btn-secondary', id: 'clear-filters-button' do
+          = fa_icon 'times', text: 'Clear filters'
+    .col-md-6
+      %span.d-block.text-right.text-secondary= raw "Displaying guests: Total: (<span id='all-guests-counter'>#{all}</span>) - Invited: (<span id='all-invited-guests-counter'>#{invited}</span>) - Remaining: (<span id='all-remaining-guests-counter'>#{remaining}</span>) - Confirmed: (<span id='all-fulfilled-guests-counter'>#{fulfilled}</span>)"
+      %span.d-block.text-right.text-secondary= "Sorting by: #{@sort}"
 
   %table.table.table-hover.table-bordered.table-sm.text-center.mt-3
     %thead
@@ -63,7 +70,4 @@
           - elsif guest.leader
             My leader:
             = link_to guest.leader.full_name, admin_search_path(search: guest.leader.email)
-
-= bootstrap_form_tag url: admin_update_guests_path do |f|
-  = f.submit 'Invite Selected', class: 'btn btn-success mb-3'
 

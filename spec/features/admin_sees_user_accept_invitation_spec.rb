@@ -26,6 +26,6 @@ feature 'Admin sees user accept invitation' do
     invitation.fulfill
 
     visit admin_path
-    expect(page).to have_selector('input.btn.btn-primary[disabled=disabled][value=Confirmed]')
+    expect(page).to have_selector('button#confirmed-button')
   end
 end

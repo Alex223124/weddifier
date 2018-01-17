@@ -56,6 +56,7 @@ def fill_form_correctly
   fill_in 'Mother surname' , with: 'Sullivan'
   fill_in 'Phone' , with: '1234567890'
   fill_in 'Email' , with: 'example@email.com'
+  uncheck 'guest_plus_one'
   click_on 'Register'
 end
 

@@ -23,7 +23,7 @@
               = f.email_field :email, required: true, tabindex: 6
           .row
             .col-md-12
-              = f.check_box :plus_one, label: 'Coming with another person? (Plus one)', data: { toggle: 'tooltip', placement: 'top', title: 'You will be able to add it on the next page.' }, checked: false
+              = f.check_box :plus_one, label: 'Coming with another person? (Plus one)', data: { toggle: 'tooltip', placement: 'top', title: 'You will be able to add it on the next page.' }, checked: true
           .row
             .col-md-3
               = f.submit 'Register', class: 'btn btn-success mt-3', tabindex: 7

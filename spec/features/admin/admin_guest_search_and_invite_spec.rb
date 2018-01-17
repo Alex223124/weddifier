@@ -67,7 +67,7 @@ feature 'Admin search' do
 
     search_for('john')
     find(:css, "#select_all").set true
-    find('input[value="Invite Selected"]', match: :first).click
+    find('button#bulk-invite-button', match: :first).click
 
     expect(page).to have_content('Guests invited successfully.')
     expect_invite_button_not_to_be_present
