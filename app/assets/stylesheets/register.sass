@@ -1,24 +1,166 @@
-.register
+#particles-js
+  position: absolute
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+  z-index: 3
+
+.hero
+  background: url(https://relateinstitute.com/wp-content/uploads/2015/12/rsz_couple_by_lake.jpg)
+  height: 100vh
+  width: auto
+  background-size: cover
+  background-position: center center
+  display: flex
+  align-items: center
+
+  &:before
+    content: ''
+    display: block
+    position: absolute
+    top: 0
+    right: 0
+    bottom: 0
+    left: 0
+    // background: linear-gradient(to right,rgba(0,0,0,0.30) 100%,rgba(0,0,0,0.30) 100%)
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.4) 80%)
+    z-index: 0
+
+  section.home
+    font-family: 'Amatic SC'
+
+    h2
+      border-top: 1px solid white
+      border-bottom: 1px solid white
+      width: 290px
+      margin: 0 auto
+
+  #see-more-arrow-down
+    bottom: -130px
+    right: 0
+    left: 0
+    font-size: 3rem
+
+  .fa-sort-desc
+    animation: save-the-date-pulse 1s infinite
+    cursor: pointer
+    position: relative
+    z-index: 5
+
+    &:before
+      position: relative
+      top: -4px
+      right: 0.3px
+      z-index: 5
+
+    &:after
+      cursor: pointer
+      content: ''
+      position: absolute
+      background: #916b3c
+      left: 50%
+      top: 8px
+      bottom: 0
+      width: 40px
+      -webkit-transform: translateX(-50%)
+      transform: translateX(-50%)
+      border-radius: 320px
+      z-index: 4
+
+  @-webkit-keyframes save-the-date-pulse
+    from
+      -webkit-transform: scale3d(1.1, 1.1, 1.1)
+      transform: scale3d(1.1, 1.1, 1.1)
+    50%
+      -webkit-transform: scale3d(0.95, 0.95, 0.95)
+      transform: scale3d(0.95, 0.95, 0.95)
+    to
+      -webkit-transform: scale3d(1.1, 1.1, 1.1)
+      transform: scale3d(1.1, 1.1, 1.1)
+
+.second-background
+  background: url(https://wallpaperclicker.com/storage/wallpaper/love-couple-photo-other-36532180.jpg)
+  background-size: cover
+  background-position: center center
+  position: relative
+  top: -33px
+
+.second-background.plus-one-container
+  top: 0
+
+.half-background
+  position: absolute
+  top: 0
+  background: rgba(70, 97, 107, 0.8509803921568627)
+  height: 100vh
+  width: 50%
+
+  @include media-breakpoint-down(lg)
+    width: 100%
+
+  @include media-breakpoint-down(sm)
+    position: static
+    background: none
+    height: auto
+    width: auto
+
+section.register
+  height: 100vh
+
+  ul
+    margin: 0 auto
+    width: 60%
+    color: #f9ecd4
+
+  .form-control-feedback
+    color: #f9ecd4
+
+  .z-index-1
+    z-index: 1
+
   span.form-text
     color: white !important // Override Bootstrap.
 
   .my-single-highlight
-    color: #ebb75d
-    background: rgba(33, 40, 49, 0.30980392156862746)
-    border-radius: 3px
+    color: #fef3e1
+    background: rgba(56, 67, 60, 0.56)
+    border-radius: 5px
+    padding: 0 5px
+
+  .my-btn-success
+    background: #bd9349
+    border-color: #9a7c4c
+    color: white
+
+    &:hover
+      background: #967540
+      border-color: #7d623a
+
+  @include media-breakpoint-down(lg)
+    // Register form texts
+    input[type=checkbox]
+      width: 23px
+      position: relative
+      right: 10px
+      top: 16px
+
+    input
+      height: 50px
+    label
+      font-size: 1.9rem
+    span
+      font-size: 1.5rem
 
   @include media-breakpoint-down(sm)
+    height: auto
+
     background: #879c72
     margin: -15px
     padding: 15px
 
-    .register-title
-      background: url("http://irsfoundation.com/tf/templates/wedding/lovely-wedding/lovely-wedding/images/slider/slide-1.jpg")
-      background-size: contain
-      background-repeat: no-repeat
-      margin: 0 -15px
-      padding: 10px
-      height: 210px
+    .mt-5
+      margin-top: 0 !important
 
     .register-footer
       margin: -15px
@@ -27,3 +169,18 @@
 
     p
       padding-top: 10px
+
+    // Register form texts
+    input[type=checkbox]
+      width: 23px
+      position: relative
+      right: 10px
+      top: 16px
+
+    input
+      height: 50px
+    label
+      font-size: 1.9rem
+    span
+      font-size: 1.5rem
+

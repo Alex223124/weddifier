@@ -1,15 +1,18 @@
-.vertical-center
-  %section.thanks
-    .row
-      .col-md-2
-      .col-md-8
-        %h1.display-1.text-center Thank you!
-        %h2.mt-3.text-center Save the date:
-        %h3.my-highlight.text-center December 24 2018
-      .col-md-2
+.container-fluid.thanks-background
+  .vertical-center
+    %section.thanks
+      .row
+        .col-md-2
+        .col-md-8
+          %h1.display-1.text-center Thank you!
+          %h2.mt-3.text-center Save the date:
+          %h3.my-highlight.text-center December 24 2018
+        .col-md-2
 
-    .row.mt-5
-      .col-md-2
-      .col-md-8
-        %p.text-center We will start sending invites as soon as registration ends. Stay tuned!
-      .col-md-2
+      .row.mt-5
+        .col-md-2
+        .col-md-8
+          %p.text-center We will start sending invites as soon as registration ends. Stay tuned!
+          %p.text-center
+            = link_to 'Go back', root_path, class: 'my-yellow-light'
+        .col-md-2

@@ -17,6 +17,10 @@ gem "bootstrap_form",
 gem 'figaro'
 gem "font-awesome-rails"
 
+source 'https://rails-assets.org' do
+  gem 'rails-assets-particles.js'
+end
+
 gem 'rails', '~> 5.1.4'
 gem 'sqlite3'
 gem 'puma', '~> 3.7'

@@ -1,73 +1,74 @@
-%h1 Registered Guests
+.container-fluid
 
-.row
-  .col-md-4
-    = form_tag admin_search_path, method: :get, class: 'mb-3 form-inline' do
-      .form-group
-        = label_tag :search, 'Guest search:'
-        = text_field_tag :search, params[:search], placeholder: 'Search',
-        autofocus: true, autocomplete: 'off', class: 'form-control ml-3 mr-3'
-      .form-group
-        = button_tag class: 'btn btn-primary' do
-          = fa_icon 'search', text: 'Search'
-  .col-md-8
-
-
-= bootstrap_form_tag url: admin_update_guests_path, remote: true do |f|
-
-  - all = @guests.size
-  - invited = @guests.where(invited: true).size
-  - remaining = all - invited
-  - fulfilled = @guests.where("invitations.fulfilled IS TRUE").references(:invitations).size
-
+  %h1 Registered Guests
   .row
-    .col-md-6
-      .d-inline-block
-        = f.button class: 'btn btn-success', id: 'bulk-invite-button', data: { disable_with: 'Inviting...' } do
-          = fa_icon 'paper-plane', text: 'Invite Selected'
-      .d-inline-block
-        = link_to admin_logout_path, method: :get, class: 'btn btn-secondary' do
-          = fa_icon 'sign-out', text: 'Logout'
-      .d-inline-block.mr-3
-        = link_to admin_path, method: :get, class: 'btn btn-secondary', id: 'clear-filters-button' do
-          = fa_icon 'times', text: 'Clear filters'
-    .col-md-6
-      %span.d-block.text-right.text-secondary= raw "Displaying guests: Total: (<span id='all-guests-counter'>#{all}</span>) - Invited: (<span id='all-invited-guests-counter'>#{invited}</span>) - Remaining: (<span id='all-remaining-guests-counter'>#{remaining}</span>) - Confirmed: (<span id='all-fulfilled-guests-counter'>#{fulfilled}</span>)"
-      %span.d-block.text-right.text-secondary= "Sorting by: #{@sort}"
+    .col-md-4
+      = form_tag admin_search_path, method: :get, class: 'mb-3 form-inline' do
+        .form-group
+          = label_tag :search, 'Guest search:'
+          = text_field_tag :search, params[:search], placeholder: 'Search',
+          autofocus: true, autocomplete: 'off', class: 'form-control ml-3 mr-3'
+        .form-group
+          = button_tag class: 'btn btn-primary' do
+            = fa_icon 'search', text: 'Search'
+    .col-md-8
 
-  %table.table.table-hover.table-bordered.table-sm.text-center.mt-3
-    %thead
-      %tr
-        %th= check_box_tag :select_all
-        %th= admin_filter('first_name')
-        %th= admin_filter('last_name')
-        %th= admin_filter('father_surname')
-        %th= admin_filter('mother_surname')
-        %th= admin_filter('email')
-        %th= admin_filter('phone')
-        %th= admin_filter('invited')
-        %th Remove
-        %th= admin_filter('created_at', 'Signed up at')
-        %th= admin_filter('invited_at')
-        %th= admin_filter('relationship', 'Plus one / Leader')
-    - @guests.each do |guest|
-      %tr{class: guest.invited? ? 'invited' : '' }
-        %td= check_box_tag 'guest_ids[]', guest.id
-        %td= guest.first_name
-        %td= guest.last_name
-        %td= guest.father_surname
-        %td= guest.mother_surname
-        %td= guest.email
-        %td= guest.phone
-        %td= guest_invite_status(guest)
-        %td= guest_remove_link(guest)
-        %td= format_date(guest.created_at)
-        %td= format_date(guest.invitation.created_at) if guest.invitation
-        %td
-          - if guest.plus_one
-            My plus one:
-            = link_to guest.plus_one.full_name, admin_search_path(search: guest.plus_one.email)
-          - elsif guest.leader
-            My leader:
-            = link_to guest.leader.full_name, admin_search_path(search: guest.leader.email)
+
+  = bootstrap_form_tag url: admin_update_guests_path, remote: true do |f|
+
+    - all = @guests.size
+    - invited = @guests.where(invited: true).size
+    - remaining = all - invited
+    - fulfilled = @guests.where("invitations.fulfilled IS TRUE").references(:invitations).size
+
+    .row
+      .col-md-6
+        .d-inline-block
+          = f.button class: 'btn btn-success', id: 'bulk-invite-button', data: { disable_with: 'Inviting...' } do
+            = fa_icon 'paper-plane', text: 'Invite Selected'
+        .d-inline-block
+          = link_to admin_logout_path, method: :get, class: 'btn btn-secondary' do
+            = fa_icon 'sign-out', text: 'Logout'
+        .d-inline-block.mr-3
+          = link_to admin_path, method: :get, class: 'btn btn-secondary', id: 'clear-filters-button' do
+            = fa_icon 'times', text: 'Clear filters'
+      .col-md-6
+        %span.d-block.text-right.text-secondary= raw "Displaying guests: Total: (<span id='all-guests-counter'>#{all}</span>) - Invited: (<span id='all-invited-guests-counter'>#{invited}</span>) - Remaining: (<span id='all-remaining-guests-counter'>#{remaining}</span>) - Confirmed: (<span id='all-fulfilled-guests-counter'>#{fulfilled}</span>)"
+        %span.d-block.text-right.text-secondary= "Sorting by: #{@sort}"
+
+    %table.table.table-hover.table-bordered.table-sm.text-center.mt-3
+      %thead
+        %tr
+          %th= check_box_tag :select_all
+          %th= admin_filter('first_name')
+          %th= admin_filter('last_name')
+          %th= admin_filter('father_surname')
+          %th= admin_filter('mother_surname')
+          %th= admin_filter('email')
+          %th= admin_filter('phone')
+          %th= admin_filter('invited')
+          %th Remove
+          %th= admin_filter('created_at', 'Signed up at')
+          %th= admin_filter('invited_at')
+          %th= admin_filter('relationship', 'Plus one / Leader')
+      - @guests.each do |guest|
+        %tr{class: guest.invited? ? 'invited' : '' }
+          %td= check_box_tag 'guest_ids[]', guest.id
+          %td= guest.first_name
+          %td= guest.last_name
+          %td= guest.father_surname
+          %td= guest.mother_surname
+          %td= guest.email
+          %td= guest.phone
+          %td= guest_invite_status(guest)
+          %td= guest_remove_link(guest)
+          %td= format_date(guest.created_at)
+          %td= format_date(guest.invitation.created_at) if guest.invitation
+          %td
+            - if guest.plus_one
+              My plus one:
+              = link_to guest.plus_one.full_name, admin_search_path(search: guest.plus_one.email)
+            - elsif guest.leader
+              My leader:
+              = link_to guest.leader.full_name, admin_search_path(search: guest.leader.email)
 
