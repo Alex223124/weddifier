@@ -1,7 +1,9 @@
 document.addEventListener 'turbolinks:load', (event) ->
   # Load particles
   if document.querySelector '#particles-js'
-    particlesJS.load 'particles-js', 'assets/particles.js/particles.json'
+    particlesJSONPath = $('#particles-js').data('json-path')
+    particlesJS.load 'particles-js', particlesJSONPath
+
   # Activate Bootstrap tooltip
   $('[data-toggle="tooltip"]').tooltip()
   # Hide form
