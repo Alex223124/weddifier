@@ -111,4 +111,22 @@ module Admin::IndexHelper
       'No sorts / filters'
     end
   end
+
+  # -- Guests sizes --
+
+  def all_guests_size(guests)
+    guests.size
+  end
+
+  def invited_guests_size(guests)
+    guests.where(invited: true).size
+  end
+
+  def remaining_to_invite_guests_size(guests)
+    all_guests_size(guests) - invited_guests_size(guests)
+  end
+
+  def confirmed_guests_size(guests)
+    guests.where("invitations.fulfilled IS TRUE").references(:invitations).size
+  end
 end

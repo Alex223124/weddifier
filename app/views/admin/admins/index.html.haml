@@ -15,12 +15,6 @@
 
 
   = bootstrap_form_tag url: admin_update_guests_path, remote: true do |f|
-
-    - all = @guests.size
-    - invited = @guests.where(invited: true).size
-    - remaining = all - invited
-    - fulfilled = @guests.where("invitations.fulfilled IS TRUE").references(:invitations).size
-
     .row
       .col-md-6
         .d-inline-block
@@ -33,7 +27,7 @@
           = link_to admin_path, method: :get, class: 'btn btn-secondary', id: 'clear-filters-button' do
             = fa_icon 'times', text: 'Clear filters'
       .col-md-6
-        %span.d-block.text-right.text-secondary= raw "Displaying guests: Total: (<span id='all-guests-counter'>#{all}</span>) - Invited: (<span id='all-invited-guests-counter'>#{invited}</span>) - Remaining: (<span id='all-remaining-guests-counter'>#{remaining}</span>) - Confirmed: (<span id='all-fulfilled-guests-counter'>#{fulfilled}</span>)"
+        %span.d-block.text-right.text-secondary= raw "Displaying guests: Total: (<span id='all-guests-counter'>#{all_guests_size(@guests)}</span>) - Invited: (<span id='all-invited-guests-counter'>#{invited_guests_size(@guests)}</span>) - Remaining: (<span id='all-remaining-guests-counter'>#{remaining_to_invite_guests_size(@guests)}</span>) - Confirmed: (<span id='all-fulfilled-guests-counter'>#{confirmed_guests_size(@guests)}</span>)"
         %span.d-block.text-right.text-secondary= "Sorting by: #{sort_status(params[:query], params[:order], params[:link])}"
 
     %table.table.table-hover.table-bordered.table-sm.text-center.mt-3
