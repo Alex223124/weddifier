@@ -1,16 +1,16 @@
 'use strict';
 
-function currentDate() {
-  var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  var today = new Date();
-  var dayName = dayNames[today.getDay()];
-  var dayNumber = today.getDate();
-  var month = monthNames[today.getMonth()];
-  var time = today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }).replace('PM', 'pm').replace('AM', 'am').replace(' ', '');
+// function currentDate() {
+//   var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+//   var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+//   var today = new Date();
+//   var dayName = dayNames[today.getDay()];
+//   var dayNumber = today.getDate();
+//   var month = monthNames[today.getMonth()];
+//   var time = today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }).replace('PM', 'pm').replace('AM', 'am').replace(' ', '');
 
-  return dayName + ' ' + dayNumber + ' ' + month + ' ' + time;
-}
+//   return dayName + ' ' + dayNumber + ' ' + month + ' ' + time;
+// }
 
 function setCurrentDateFor(guestID) {
   var headerRow = document.querySelector('tr');
@@ -20,13 +20,14 @@ function setCurrentDateFor(guestID) {
 
   for (var i = 0; i < headerRow.children.length; i++) {
     var th = headerRow.children[i];
-    if (th.innerText === 'Invited at') {
+    if (th.innerText.trim() === 'Invited at') {
       currentDateColumnIndex = i;
       break;
     }
   }
 
-  row.children[currentDateColumnIndex].innerHTML = currentDate();
+  var currentFormattedDate = "<%= format_date(1.seconds.ago) %>"
+  row.children[currentDateColumnIndex].innerHTML = currentFormattedDate;
 }
 
 function updateTotalCounter(deleteCount) {

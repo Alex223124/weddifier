@@ -90,6 +90,8 @@ module Admin::IndexHelper
   end
 
   def format_date(date)
-    date.in_time_zone('America/Mexico_City').strftime("%A %d %B %l:%M%P")
+    time_ago_in_words(date.in_time_zone('America/Mexico_City'),
+      include_seconds: true) + ' ago' + ' / ' +
+      date.in_time_zone('America/Mexico_City').strftime("%A %d %b %l:%M%P")
   end
 end

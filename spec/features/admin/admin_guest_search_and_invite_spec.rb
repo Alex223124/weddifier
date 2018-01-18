@@ -1,4 +1,5 @@
 require 'rails_helper'
+include ActionView::Helpers::DateHelper
 
 feature 'Admin search' do
   let!(:john) { Fabricate(:guest, first_name: 'John') }
@@ -81,6 +82,8 @@ feature 'Admin search' do
   end
 
   def format_date(date)
-    date.in_time_zone('America/Mexico_City').strftime("%A %d %B %l:%M%P")
+    time_ago_in_words(date.in_time_zone('America/Mexico_City'),
+      include_seconds: true) + ' ago' + ' / ' +
+      date.in_time_zone('America/Mexico_City').strftime("%A %d %b %l:%M%P")
   end
 end
