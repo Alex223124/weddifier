@@ -191,14 +191,14 @@ feature 'Admin sorts guests' do
     visit admin_path
 
     click_link 'Plus one / Leader'
-    expect(page).to have_content 'Sorting by: Guests with plus one'
+    expect(page).to have_content 'Plus one / Leader, Guests with plus one'
     expect(page.body).not_to include(c_guest.phone)
     expect(page.body).to include(a_guest.phone)
     expect(page.body).not_to include(b_guest.phone)
 
 
     click_link 'Plus one / Leader'
-    expect(page).to have_content 'Sorting by: Guests without plus one'
+    expect(page).to have_content 'Plus one / Leader, Guests without plus one'
     expect(page.body).to include(c_guest.phone)
     expect(page.body).not_to include(a_guest.phone)
     expect(page.body).not_to include(b_guest.phone)

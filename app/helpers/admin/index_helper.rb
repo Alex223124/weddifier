@@ -100,7 +100,7 @@ module Admin::IndexHelper
 
     if query && order
       string_order = case query
-      when 'invited_at' || 'created_at' then
+      when 'invited_at', 'created_at'
         desc ? "Recent to Old" : "Old to Recent"
       when 'relationship'
         desc ? 'Guests without plus one' : 'Guests with plus one'
