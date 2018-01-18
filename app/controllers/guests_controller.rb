@@ -1,5 +1,5 @@
 class GuestsController < ApplicationController
-  before_action :redirect_if_already_registered
+  before_action :redirect_if_already_registered, only: [:create]
 
   def new
     @guest = Guest.new
@@ -65,7 +65,10 @@ class GuestsController < ApplicationController
   end
 
   def redirect_if_already_registered
-    redirect_to home_path if guest_already_registered?
+    if guest_already_registered?
+      flash[:danger] = 'Sorry, you had already registered.'
+      redirect_to root_path
+    end
   end
 
   def guest_already_registered?

@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 describe 'Guests Controller request', type: :request do
-  context 'GET index' do
+  context 'GET new' do
     context 'if guest has already registered (id in session)' do
-      it 'redirects to home' do
+      it 'can visit root path again' do
         post guests_path, params: { guest: Fabricate.attributes_for(:guest) }
         get new_guest_path
-        expect(response).to redirect_to home_path
+        expect(response.status).to be(200)
       end
     end
 
@@ -46,6 +46,14 @@ describe 'Guests Controller request', type: :request do
     context 'with valid inputs' do
       def post_valid_guest
         post guests_path, params: { guest: Fabricate.attributes_for(:guest) }
+      end
+
+      context 'when already registered' do
+        before { post_valid_guest }
+
+        it_behaves_like 'trying to register twice' do
+          let(:action) { post_valid_guest }
+        end
       end
 
       it 'sets the session to the guest id' do

@@ -6,6 +6,20 @@ RSpec.shared_examples 'a logged out admin' do
   end
 end
 
+RSpec.shared_examples 'trying to register twice' do
+  before do
+    action
+  end
+
+  it 'flashes an error message' do
+    expect(flash[:danger]).to be_present
+  end
+
+  it 'redirects to root path' do
+    expect(response).to redirect_to root_path
+  end
+end
+
 RSpec.shared_examples 'trying to register a plus one without a leader' do
   before do
     action
@@ -31,7 +45,7 @@ RSpec.shared_examples 'trying to register a plus one twice' do
     expect(flash[:danger]).to be_present
   end
 
-  it 'redirects to thank you page' do
-    expect(response).to redirect_to thank_you_path
+  it 'redirects to root path' do
+    expect(response).to redirect_to root_path
   end
 end

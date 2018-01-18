@@ -13,7 +13,7 @@ feature 'User registration' do
     visit root_path
     fill_form_correctly
     visit root_path
-    expect(page).to have_current_path(home_path)
+    expect(page).to have_current_path(root_path)
   end
 
   scenario 'User vists root path and registers unsuccessfully' do

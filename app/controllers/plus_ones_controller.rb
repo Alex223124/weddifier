@@ -40,8 +40,8 @@ class PlusOnesController < ApplicationController
 
   def redirect_if_already_registered
     if session[:plus_one_id]
-      flash[:danger] = 'You have already registered your plus one.'
-      redirect_to thank_you_path
+      flash[:danger] = 'Sorry, you had already registered your plus one.'
+      redirect_to root_path
     end
   end
 end
