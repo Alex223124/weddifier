@@ -114,6 +114,29 @@ module Admin::IndexHelper
     end
   end
 
+  def generate_pages_array(page_number)
+    return unless page_number
+
+    requested_offset = params[:offset]
+
+    (0..page_number).each_with_object([]) do |n, array_of_link_pages|
+      offset = n * Guest::PER_PAGE
+
+      # If no pagination requested, first page (n == 0) will be a string.
+      # Or if there is indeed a pagination request, make the current page that
+      # matches that offset to a string.
+      if (requested_offset.nil? && n == 0) || requested_offset.to_s == (offset).to_s
+        array_of_link_pages << "| Page #{n + 1}"
+
+      # Other pages will be links instead of strings.
+      else
+        array_of_link_pages << (link_to "| Page #{n + 1}", admin_path(
+          offset: offset, link: params[:link], order: params[:order],
+          query: params[:query]))
+      end
+    end
+  end
+
   # -- Total guests sizes --
 
   def all_guests_size(guests)

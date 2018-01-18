@@ -30,13 +30,9 @@
         %span.d-block.text-right.text-secondary= "Sorting by: #{sort_status(params[:query], params[:order], params[:link])}"
     .row
       .col-md-12
-        - if @pages
-          - @pages.times do |n|
-            - offset = n * Guest::PER_PAGE
-            - if (params[:offset].nil? && n == 0) || params[:offset].to_s == (offset).to_s
-              = "| Page #{n + 1}"
-            - else
-              = link_to "| Page #{n + 1}", admin_path(offset: offset, link: params[:link], order: params[:order], query: params[:query])
+        %ul.pages
+          - generate_pages_array(@pages).each do |page|
+            %li.d-inline-block.page= page
 
     %table.table.table-hover.table-bordered.table-sm.text-center.mt-1
       %thead
