@@ -1,5 +1,6 @@
 class Guest < ActiveRecord::Base
   include Sortable
+  PER_PAGE = 25
 
   default_scope { includes(:invitation).includes(:plus_one) }
 

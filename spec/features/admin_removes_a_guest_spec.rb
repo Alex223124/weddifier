@@ -11,14 +11,14 @@ feature 'Guest removal' do
   scenario 'Admin clicks on Remove for a guest with javascript', js: true do
     search_for('john')
     expect(page).to have_content(
-      'Displaying  guests: Total: (1) - Invited: (0) - Remaining: (1)')
+      'Displaying  guests: Total: (2) - Invited: (0) - Remaining: (2)')
 
     click_on('Remove', match: :first)
 
     page.driver.browser.switch_to.alert.accept
     expect(page).not_to have_content john.phone
     expect(page).to have_content(
-      'Displaying  guests: Total: (0) - Invited: (0) - Remaining: (0)')
+      'Displaying  guests: Total: (1) - Invited: (0) - Remaining: (1)')
   end
 
   scenario 'Admin clicks on Remove for a guest without javascript' do

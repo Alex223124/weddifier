@@ -50,16 +50,18 @@ module Admin::IndexHelper
   end
 
   def admin_filter(attribute, link_name = to_filter_name(attribute))
+    offset = params[:offset]
+
     # Only change order if clicking on same link.
     if params[:query] == attribute
       new_order = (params[:order] == 'asc' ? 'desc' : 'asc')
 
-      link_to admin_path(query: attribute, order: new_order, link: link_name) do
+      link_to admin_path(query: attribute, order: new_order, link: link_name, offset: offset) do
         select_fa_icon(link_name, params[:order])
       end
     # Else start ascending.
     else
-      link_to admin_path(query: attribute, order: 'asc', link: link_name) do
+      link_to admin_path(query: attribute, order: 'asc', link: link_name, offset: offset) do
         sort_name = link_name == 'Plus one / Leader' ? 'filter' : 'sort'
 
         fa_icon sort_name, text: link_name
@@ -112,14 +114,14 @@ module Admin::IndexHelper
     end
   end
 
-  # -- Guests sizes --
+  # -- Total guests sizes --
 
   def all_guests_size(guests)
-    guests.size
+    Guest.all.size
   end
 
   def invited_guests_size(guests)
-    guests.where(invited: true).size
+    Guest.where(invited: true).size
   end
 
   def remaining_to_invite_guests_size(guests)
@@ -127,6 +129,6 @@ module Admin::IndexHelper
   end
 
   def confirmed_guests_size(guests)
-    guests.where("invitations.fulfilled IS TRUE").references(:invitations).size
+    Guest.where("invitations.fulfilled IS TRUE").references(:invitations).size
   end
 end

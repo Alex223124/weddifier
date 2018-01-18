@@ -46,7 +46,7 @@ feature 'Admin search' do
     expect(page).to have_content('John')
     expect(page).not_to have_content('Dave')
     expect(page).to have_content(
-      'Displaying  guests: Total: (1) - Invited: (0) - Remaining: (1)')
+      'Displaying  guests: Total: (2) - Invited: (0) - Remaining: (2)')
   end
 
   scenario 'Admin searches for a guest and single invites from search results', js: true do
