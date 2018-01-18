@@ -3,25 +3,21 @@ module Admin
     before_action :require_admin
 
     def index
-      if params[:query] && params[:order]
-        @sort = sort_status(params[:query], params[:order], params[:link])
+      query, order = [params[:query], params[:order]]
 
-        if params[:query] == 'invited_at'
-          @guests = Guest.order(invited: :desc).order("invitations.created_at #{params[:order]}").includes(:leader)
-        elsif params[:query] == 'relationship'
-          if params[:order] == 'asc'
-            @guests = Guest.joins(:plus_one).order(invited: :asc).order(created_at: :desc)
-          elsif params[:order] == 'desc'
-            @guests = Guest.where(leader_id: nil).where(plus_one_id: nil).order(invited: :asc).order(created_at: :desc)
-          end
-        elsif params[:query] == 'invited'
-          @guests = Guest.order(invited: params[:order].to_sym).order("invitations.fulfilled IS TRUE desc").includes(:leader)
-        else
-          @guests = Guest.order("#{params[:query]} #{params[:order]}").includes(:leader)
+      if query && order
+        @sort = sort_status(query, order, params[:link])
+
+        @guests = case query
+        when 'invited_at' then Guest.order_by_invited_at(order)
+        when 'relationship' then  Guest.order_by_relationship(order)
+        when 'invited' then Guest.order_by_invited(order)
+        else Guest.order_by(query, order)
         end
+
       else
         @sort = 'No sorts / filters'
-        @guests = Guest.all.order(invited: :asc).order(created_at: :desc).includes(:leader)
+        @guests = Guest.default_order
       end
     end
 

@@ -1,4 +1,6 @@
 class Guest < ActiveRecord::Base
+  include Sortable
+
   default_scope { includes(:invitation).includes(:plus_one) }
 
   has_one :plus_one, class_name: 'Guest', foreign_key: 'leader_id',
