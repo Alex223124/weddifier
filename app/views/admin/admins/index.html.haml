@@ -34,7 +34,7 @@
             = fa_icon 'times', text: 'Clear filters'
       .col-md-6
         %span.d-block.text-right.text-secondary= raw "Displaying guests: Total: (<span id='all-guests-counter'>#{all}</span>) - Invited: (<span id='all-invited-guests-counter'>#{invited}</span>) - Remaining: (<span id='all-remaining-guests-counter'>#{remaining}</span>) - Confirmed: (<span id='all-fulfilled-guests-counter'>#{fulfilled}</span>)"
-        %span.d-block.text-right.text-secondary= "Sorting by: #{@sort}"
+        %span.d-block.text-right.text-secondary= "Sorting by: #{sort_status(params[:query], params[:order], params[:link])}"
 
     %table.table.table-hover.table-bordered.table-sm.text-center.mt-3
       %thead

@@ -94,4 +94,22 @@ module Admin::IndexHelper
       include_seconds: true) + ' ago' + ' / ' +
       date.in_time_zone('America/Mexico_City').strftime("%A %d %b %l:%M%P")
   end
+
+  def sort_status(query, order, link_name)
+    desc = (order == 'desc')
+
+    if query && order
+      if query == 'invited_at' || query == 'created_at'
+        desc ? "#{link_name}, Recent to Old" : "#{link_name}, Old to Recent"
+      elsif query == 'relationship'
+        desc ? 'Guests without plus one' : 'Guests with plus one'
+      elsif query == 'invited'
+        desc ? "#{link_name}, confirmed first" : "#{link_name}, non-invited first"
+      else
+        desc ? "#{link_name}, Z-A / 9-0" : "#{link_name}, A-Z / 0-9"
+      end
+    else
+      'No sorts / filters'
+    end
+  end
 end
