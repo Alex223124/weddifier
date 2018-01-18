@@ -70,15 +70,11 @@ module Admin::IndexHelper
   def select_fa_icon(link_name, order)
     link_name = link_name.strip
 
-    icon =
-      if link_name == 'Invited' || link_name == 'Signed up at'
-        fa_icon "sort-#{order}"
-      elsif link_name == 'Phone'
-        fa_icon "sort-numeric-#{order}"
-      elsif link_name == 'Plus one / Leader'
-        fa_icon 'filter'
-      else
-        fa_icon "sort-alpha-#{order}"
+    icon = case link_name
+      when 'Invited', 'Signed up at' then fa_icon "sort-#{order}"
+      when 'Phone'                   then fa_icon "sort-numeric-#{order}"
+      when 'Plus one / Leader'       then fa_icon 'filter'
+      else                                fa_icon "sort-alpha-#{order}"
       end
 
     icon + ' ' + link_name
