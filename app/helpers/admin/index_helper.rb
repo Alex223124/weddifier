@@ -99,15 +99,18 @@ module Admin::IndexHelper
     desc = (order == 'desc')
 
     if query && order
-      if query == 'invited_at' || query == 'created_at'
-        desc ? "#{link_name}, Recent to Old" : "#{link_name}, Old to Recent"
-      elsif query == 'relationship'
+      string_order = case query
+      when 'invited_at' || 'created_at' then
+        desc ? "Recent to Old" : "Old to Recent"
+      when 'relationship'
         desc ? 'Guests without plus one' : 'Guests with plus one'
-      elsif query == 'invited'
-        desc ? "#{link_name}, confirmed first" : "#{link_name}, non-invited first"
+      when 'invited'
+        desc ? "confirmed first" : "non-invited first"
       else
-        desc ? "#{link_name}, Z-A / 9-0" : "#{link_name}, A-Z / 0-9"
+        desc ? "Z-A / 9-0" : "A-Z / 0-9"
       end
+
+      "#{link_name}, #{string_order}"
     else
       'No sorts / filters'
     end
