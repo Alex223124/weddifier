@@ -115,7 +115,7 @@ module Admin::IndexHelper
   end
 
   def generate_pages_array(page_number)
-    return unless page_number
+    return [] unless page_number
 
     requested_offset = params[:offset]
 
