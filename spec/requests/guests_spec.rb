@@ -90,57 +90,68 @@ describe 'Guests Controller request', type: :request do
   end
 
   context 'DELETE destroy' do
-    context 'with valid guest' do
-      let!(:guest) { Fabricate(:guest) }
-
-      it 'destroys the guest' do
-        expect { delete guest_path(guest) }.to change(Guest, :count).by(-1)
-      end
-
-      it 'redirects to admin path' do
-        delete guest_path(guest)
-        expect(response).to redirect_to admin_path
-      end
-
-      it 'displays a flash success message' do
-        delete guest_path(guest)
-        expect(flash[:success]).to be_present
-      end
-
-      it 'if leader was deleted, flash that plus one was deleted' do
-        plus_one = Fabricate(:guest)
-        guest.plus_one = plus_one
-        guest.save
-        message = "Successfully removed guest #{guest.full_name} -"\
-          " #{guest.email}. Also deleted plus one: #{plus_one.full_name}"\
-          " - #{plus_one.email}."
-
-        delete guest_path(guest)
-        expect(flash[:success]).to eq(message)
-      end
-
-      it 'if plus one was deleted, flash that leader is now left without plus'\
-        ' one' do
-        plus_one = Fabricate(:guest)
-        guest.plus_one = plus_one
-        guest.save
-        message = "Successfully removed guest #{plus_one.full_name} -"\
-          " #{plus_one.email}. #{guest.full_name} has no plus one now."
-
-        delete guest_path(plus_one)
-        expect(flash[:success]).to eq(message)
+    context 'when no admin logged in' do
+      it 'redirects to admin login path' do
+        delete guest_path(Fabricate(:guest))
+        expect(response).to redirect_to admin_login_path
       end
     end
 
-    context 'with invalid guest' do
-      before { delete guest_path(1) }
+    context 'when admin logged in' do
+      before { admin_login }
 
-      it 'flashes an error message' do
-        expect(flash[:danger]).to be_present
+      context 'with valid guest' do
+        let!(:guest) { Fabricate(:guest) }
+
+        it 'destroys the guest' do
+          expect { delete guest_path(guest) }.to change(Guest, :count).by(-1)
+        end
+
+        it 'redirects to admin path' do
+          delete guest_path(guest)
+          expect(response).to redirect_to admin_path
+        end
+
+        it 'displays a flash success message' do
+          delete guest_path(guest)
+          expect(flash[:success]).to be_present
+        end
+
+        it 'if leader was deleted, flash that plus one was deleted' do
+          plus_one = Fabricate(:guest)
+          guest.plus_one = plus_one
+          guest.save
+          message = "Successfully removed guest #{guest.full_name} -"\
+            " #{guest.email}. Also deleted plus one: #{plus_one.full_name}"\
+            " - #{plus_one.email}."
+
+          delete guest_path(guest)
+          expect(flash[:success]).to eq(message)
+        end
+
+        it 'if plus one was deleted, flash that leader is now left without plus'\
+          ' one' do
+          plus_one = Fabricate(:guest)
+          guest.plus_one = plus_one
+          guest.save
+          message = "Successfully removed guest #{plus_one.full_name} -"\
+            " #{plus_one.email}. #{guest.full_name} has no plus one now."
+
+          delete guest_path(plus_one)
+          expect(flash[:success]).to eq(message)
+        end
       end
 
-      it 'redirects to admin path' do
-        expect(response).to redirect_to admin_path
+      context 'with invalid guest' do
+        before { delete guest_path(1) }
+
+        it 'flashes an error message' do
+          expect(flash[:danger]).to be_present
+        end
+
+        it 'redirects to admin path' do
+          expect(response).to redirect_to admin_path
+        end
       end
     end
   end

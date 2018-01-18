@@ -1,5 +1,6 @@
 class GuestsController < ApplicationController
   before_action :redirect_if_already_registered, only: [:create]
+  before_action :require_admin, only: [:destroy]
 
   def new
     @guest = Guest.new
