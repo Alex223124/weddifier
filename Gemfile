@@ -16,6 +16,7 @@ gem "bootstrap_form",
     branch: "master"
 gem 'figaro'
 gem "font-awesome-rails"
+gem 'faker'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-particles.js'
@@ -35,7 +36,6 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'rspec-rails'
   gem 'fabrication'
-  gem 'faker'
   gem 'orderly'
 end
 
