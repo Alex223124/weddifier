@@ -89,38 +89,38 @@ jobs:
             heroku run rake db:migrate --app weddifier
             heroku maintenance:off --app weddifier
             heroku restart --app weddifier
-  # deploy-staging:
-  #   docker:
-  #     - image: circleci/ruby:2.4.1-node-browsers
-  #   working_directory: ~/repo
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: Run setup script
-  #         command: bash .circleci/setup-heroku.sh
-  #     - add_ssh_keys:
-  #         fingerprints:
-  #           - "bd:00:9c:f3:b3:17:0b:78:14:a0:a2:2b:06:53:90:a1"
-  #     - run:
-  #         name: Deploy master to Heroku master
-  #         command: |
-  #           heroku maintenance:on --app weddifier-staging
-  #           git push --force git@heroku.com:weddifier-staging.git HEAD:refs/heads/master
-  #           heroku run rake db:migrate --app weddifier-staging
-  #           heroku maintenance:off --app weddifier-staging
-  #           heroku restart --app weddifier-staging
+  deploy-staging:
+    docker:
+      - image: circleci/ruby:2.4.1-node-browsers
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Run setup script
+          command: bash .circleci/setup-heroku.sh
+      - add_ssh_keys:
+          fingerprints:
+            - "bd:00:9c:f3:b3:17:0b:78:14:a0:a2:2b:06:53:90:a1"
+      - run:
+          name: Deploy master to Heroku staging
+          command: |
+            heroku maintenance:on --app weddifier-staging-app
+            git push --force git@heroku.com:weddifier-staging-app.git HEAD:refs/heads/master
+            heroku run rake db:migrate --app weddifier-staging-app
+            heroku maintenance:off --app weddifier-staging-app
+            heroku restart --app weddifier-staging-app
 
 workflows:
   version: 2
   build-deploy:
     jobs:
       - build
-      # - deploy-staging:
-      #     requires:
-      #       - build
-      #     filters:
-      #       branches:
-      #         only: staging
+      - deploy-staging:
+          requires:
+            - build
+          filters:
+            branches:
+              only: staging
 
       - deploy-master:
           requires:
