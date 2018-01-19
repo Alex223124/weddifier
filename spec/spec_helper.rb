@@ -14,7 +14,6 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
-  Capybara.javascript_driver = :selenium_chrome_headless
   # Require all macros since they are a few.
   Dir["./spec/support/**/*.rb"].sort.each { |f| require f }
 
