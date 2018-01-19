@@ -13,9 +13,10 @@ feature 'Guest removal' do
     expect(page).to have_content(
       'Displaying  guests: Total: (2) - Invited: (0) - Remaining: (2)')
 
-    click_on('Remove', match: :first)
 
-    page.driver.browser.switch_to.alert.accept
+    accept_alert do
+      click_on('Remove', match: :first)
+    end
     expect(page).not_to have_content john.phone
     expect(page).to have_content(
       'Displaying  guests: Total: (1) - Invited: (0) - Remaining: (1)')

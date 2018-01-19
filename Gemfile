@@ -38,6 +38,7 @@ group :development, :test do
   gem 'fabrication'
   gem 'orderly'
   gem 'rspec_junit_formatter'
+  gem 'rspec-wait'
 end
 
 group :test do
