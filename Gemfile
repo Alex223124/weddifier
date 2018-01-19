@@ -37,6 +37,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'fabrication'
   gem 'orderly'
+  gem 'rspec_junit_formatter'
 end
 
 group :test do
