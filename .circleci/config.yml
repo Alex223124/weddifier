@@ -1,0 +1,131 @@
+# Ruby CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-ruby/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+       - image: circleci/ruby:2.4.1-node-browsers
+         environment:
+           PGHOST: 127.0.0.1
+           PGUSER: postgres
+           RAILS_ENV: test
+       - image: circleci/postgres:9.5-alpine
+         environment:
+           POSTGRES_USER: postgres
+           POSTGRES_DB: weddings_test
+           POSTGRES_PASSWORD: ""
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "Gemfile.lock" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+
+      # Database setup
+      - run: bundle exec rake db:create
+      - run: bundle exec rake db:schema:load
+
+      # run tests!
+      - run:
+          name: run tests
+          command: |
+            mkdir /tmp/test-results
+            TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"
+
+            bundle exec rspec --format progress \
+                            --format RspecJunitFormatter \
+                            --out /tmp/test-results/rspec.xml \
+                            --format progress \
+                            -- $(echo "${TEST_FILES}" | sed -e 's/\n/\\n/' -e 's/ /\ /')
+
+      # collect reports
+      - store_test_results:
+          path: /tmp/test-results
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: test-results
+  deploy-master:
+    docker:
+      - image: circleci/ruby:2.4.1-node-browsers
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Run setup script
+          command: bash .circleci/setup-heroku.sh
+      - add_ssh_keys:
+          fingerprints:
+            - "bd:00:9c:f3:b3:17:0b:78:14:a0:a2:2b:06:53:90:a1"
+      - run:
+          name: Deploy master to Heroku master
+          command: |
+            heroku maintenance:on --app weddifier
+            heroku pg:backups:capture --app weddifier
+            git push --force git@heroku.com:weddifier.git HEAD:refs/heads/master
+            heroku run rake db:migrate --app weddifier
+            heroku maintenance:off --app weddifier
+            heroku restart --app weddifier
+  # deploy-staging:
+  #   docker:
+  #     - image: circleci/ruby:2.4.1-node-browsers
+  #   working_directory: ~/repo
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Run setup script
+  #         command: bash .circleci/setup-heroku.sh
+  #     - add_ssh_keys:
+  #         fingerprints:
+  #           - "bd:00:9c:f3:b3:17:0b:78:14:a0:a2:2b:06:53:90:a1"
+  #     - run:
+  #         name: Deploy master to Heroku master
+  #         command: |
+  #           heroku maintenance:on --app weddifier-staging
+  #           git push --force git@heroku.com:weddifier-staging.git HEAD:refs/heads/master
+  #           heroku run rake db:migrate --app weddifier-staging
+  #           heroku maintenance:off --app weddifier-staging
+  #           heroku restart --app weddifier-staging
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      # - deploy-staging:
+      #     requires:
+      #       - build
+      #     filters:
+      #       branches:
+      #         only: staging
+
+      - deploy-master:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+
