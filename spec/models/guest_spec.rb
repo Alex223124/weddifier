@@ -1,4 +1,5 @@
 require 'rails_helper'
+require Rails.root.join 'spec/models/concerns/sortable.rb'
 
 describe Guest, type: :model do
   it { should have_one(:plus_one).class_name('Guest') }
@@ -16,6 +17,8 @@ describe Guest, type: :model do
   it { should validate_length_of(:phone).is_at_least(10) }
   it { should validate_length_of(:phone).is_at_most(10) }
   it { should validate_uniqueness_of :email }
+
+  it_behaves_like 'sortable'
 
   context '#invited' do
     it 'returns true if invitation is present' do

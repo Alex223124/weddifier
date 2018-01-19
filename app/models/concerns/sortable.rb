@@ -7,8 +7,7 @@ module Sortable
     end
 
     def order_by_invited_at(order)
-      Guest.order(invited: :desc).order("invitations.created_at #{order}")
-      .includes(:leader)
+      Guest.order("guests.invited desc", "invitations.created_at #{order}", "guests.id #{order}").includes(:leader)
     end
 
     def order_by_relationship(order)
@@ -21,12 +20,11 @@ module Sortable
     end
 
     def order_by_invited(order)
-      Guest.order(invited: order.to_sym)
-        .order("invitations.fulfilled IS TRUE desc").includes(:leader)
+      Guest.order("guests.invited #{order}", "invitations.fulfilled IS TRUE desc", "guests.id #{order}").includes(:leader)
     end
 
     def order_by(query, order)
-      Guest.order("#{query} #{order}").includes(:leader)
+      Guest.order("#{query} #{order}", "guests.id #{order}").includes(:leader)
     end
   end
 end

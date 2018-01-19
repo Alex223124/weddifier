@@ -50,16 +50,18 @@ module Admin::IndexHelper
   end
 
   def admin_filter(attribute, link_name = to_filter_name(attribute))
+    offset = params[:offset]
+
     # Only change order if clicking on same link.
     if params[:query] == attribute
       new_order = (params[:order] == 'asc' ? 'desc' : 'asc')
 
-      link_to admin_path(query: attribute, order: new_order, link: link_name) do
+      link_to admin_path(query: attribute, order: new_order, link: link_name, offset: offset) do
         select_fa_icon(link_name, params[:order])
       end
     # Else start ascending.
     else
-      link_to admin_path(query: attribute, order: 'asc', link: link_name) do
+      link_to admin_path(query: attribute, order: 'asc', link: link_name, offset: offset) do
         sort_name = link_name == 'Plus one / Leader' ? 'filter' : 'sort'
 
         fa_icon sort_name, text: link_name
@@ -112,14 +114,37 @@ module Admin::IndexHelper
     end
   end
 
-  # -- Guests sizes --
+  def generate_pages_array(page_number)
+    return [] unless page_number
+
+    requested_offset = params[:offset]
+
+    (0...page_number).each_with_object([]) do |n, array_of_link_pages|
+      offset = n * Guest::PER_PAGE
+
+      # If no pagination requested, first page (n == 0) will be a string.
+      # Or if there is indeed a pagination request, make the current page that
+      # matches that offset to a string.
+      if (requested_offset.nil? && n == 0) || requested_offset.to_s == (offset).to_s
+        array_of_link_pages << "| Page #{n + 1}"
+
+      # Other pages will be links instead of strings.
+      else
+        array_of_link_pages << (link_to "| Page #{n + 1}", admin_path(
+          offset: offset, link: params[:link], order: params[:order],
+          query: params[:query]))
+      end
+    end
+  end
+
+  # -- Total guests sizes --
 
   def all_guests_size(guests)
-    guests.size
+    Guest.all.size
   end
 
   def invited_guests_size(guests)
-    guests.where(invited: true).size
+    Guest.where(invited: true).size
   end
 
   def remaining_to_invite_guests_size(guests)
@@ -127,6 +152,6 @@ module Admin::IndexHelper
   end
 
   def confirmed_guests_size(guests)
-    guests.where("invitations.fulfilled IS TRUE").references(:invitations).size
+    Guest.where("invitations.fulfilled IS TRUE").references(:invitations).size
   end
 end

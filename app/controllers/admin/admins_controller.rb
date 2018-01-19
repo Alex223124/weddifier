@@ -3,8 +3,9 @@ module Admin
     before_action :require_admin
 
     def index
-      query, order = [params[:query], params[:order]]
+      query, order, offset = [params[:query], params[:order], params[:offset]]
 
+      # -- Sort --
       if query && order
         @guests = case query
         when 'invited_at' then Guest.order_by_invited_at(order)
@@ -15,6 +16,10 @@ module Admin
       else
         @guests = Guest.default_order
       end
+
+      # -- Paginate --
+      @guests = @guests.limit(Guest::PER_PAGE).offset(offset)
+      @pages = (Guest.all.size.to_f / Guest::PER_PAGE).ceil
     end
 
     def search
