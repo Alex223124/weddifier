@@ -119,7 +119,7 @@ module Admin::IndexHelper
 
     requested_offset = params[:offset]
 
-    (0..page_number).each_with_object([]) do |n, array_of_link_pages|
+    (0...page_number).each_with_object([]) do |n, array_of_link_pages|
       offset = n * Guest::PER_PAGE
 
       # If no pagination requested, first page (n == 0) will be a string.
