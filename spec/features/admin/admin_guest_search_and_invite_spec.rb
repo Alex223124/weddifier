@@ -2,8 +2,8 @@ require 'rails_helper'
 include ActionView::Helpers::DateHelper
 
 feature 'Admin search' do
-  let!(:john) { Fabricate(:guest, first_name: 'John') }
-  let!(:dave) { Fabricate(:guest, first_name: 'Dave') }
+  let!(:john) { Fabricate(:guest, first_name: 'User #1') }
+  let!(:dave) { Fabricate(:guest, first_name: 'User #2') }
 
   background do
     # Needs windows running chromedriver
@@ -36,15 +36,15 @@ feature 'Admin search' do
   end
 
   scenario 'Admin searches for a guest' do
-    expect(page).to have_content('John')
-    expect(page).to have_content('Dave')
+    expect(page).to have_content(john.first_name)
+    expect(page).to have_content(dave.first_name)
     expect(page).to have_content(
       'Displaying  guests: Total: (2) - Invited: (0) - Remaining: (2)')
 
-    search_for('john')
+    search_for(john.first_name.downcase)
 
-    expect(page).to have_content('John')
-    wait_for(page).not_to have_content('Dave')
+    expect(page).to have_content(john.first_name)
+    wait_for(page).not_to have_content(dave.first_name)
     expect(page).to have_content(
       'Displaying  guests: Total: (2) - Invited: (0) - Remaining: (2)')
   end
@@ -53,10 +53,10 @@ feature 'Admin search' do
     expect_invite_button_to_be_present
     expect_remove_button_to_be_present
 
-    search_for('john')
+    search_for(john.first_name.downcase)
     click_on('Invite')
 
-    expect(page).to have_content('Successfully invited guest John')
+    expect(page).to have_content("Successfully invited guest #{john.first_name}")
     expect_invite_button_not_to_be_present
     expect_remove_button_not_to_be_present
     expect(page).to have_content(format_date(john.invitation.created_at))
@@ -66,7 +66,7 @@ feature 'Admin search' do
     expect_invite_button_to_be_present
     expect_remove_button_to_be_present
 
-    search_for('john')
+    search_for(john.first_name.downcase)
     find(:css, "#select_all").set true
     find('button#bulk-invite-button', match: :first).click
 
@@ -77,7 +77,7 @@ feature 'Admin search' do
   end
 
   scenario 'Admin searches and sorting by status should reflect no sorts' do
-    search_for('john')
+    search_for(john.first_name.downcase)
     expect(page).to have_content('Sorting by: No sorts / filters')
   end
 
