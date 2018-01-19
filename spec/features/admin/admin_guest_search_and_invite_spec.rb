@@ -44,7 +44,7 @@ feature 'Admin search' do
     search_for('john')
 
     expect(page).to have_content('John')
-    expect(page).not_to have_content('Dave')
+    wait_for(page).not_to have_content('Dave')
     expect(page).to have_content(
       'Displaying  guests: Total: (2) - Invited: (0) - Remaining: (2)')
   end
