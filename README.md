@@ -31,7 +31,7 @@ It is intended to be a single-page stop for wedding guests to leave out their da
 
 ## Demo
 
-http://weddifier.herokuapp.com
-Admin: /admin
-admin@example.com
-test
+http://weddifier.herokuapp.com  
+Admin: /admin  
+admin@example.com  
+test  
