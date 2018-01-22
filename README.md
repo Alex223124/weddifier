@@ -28,3 +28,10 @@ It is intended to be a single-page stop for wedding guests to leave out their da
 ## Roadmap
 
 * Convert it to a multi-tenant app for people to create their own wedding register, with images and styles of their choosing.
+
+### Demo
+
+http://weddifier.herokuapp.com
+Admin: /admin
+admin@example.com
+test
